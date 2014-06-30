@@ -1,6 +1,6 @@
 
 var chart =  new Charty.Chart();
-var lazyUpdate = _.debounce(function(el){
+var lazyUpdate = _.debounce(function(){
 
     $("#chart-config, #data-config").each(function(){
         var formId = $(this).attr("id");
@@ -37,6 +37,8 @@ var lazyUpdate = _.debounce(function(el){
 
 $(document).ready(function(){
   $('#chart-config .form-control, #data-config .form-control').change(
-    function(){ lazyUpdate(this); }
+    function(){ lazyUpdate(); }
   );
+
+  lazyUpdate();
 })

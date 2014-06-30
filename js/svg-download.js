@@ -1,32 +1,20 @@
-var downloadPNG = function(source) {
+$(document).ready(function() {
 
-// grab the SVG element
+	$('#download-image-link a.prep').click(function(e) {
 
+		$('#download-image-link a.prep').hide();
+	    e.preventDefault();
 
-    var filename = "untitled";
+	    var filename = 'untitled'; // TODO: set up useful filename structure based on chart contents, date
+		var source = new Array();
+	    source.push($('.highcharts-container').html());
+	    var url = window.URL.createObjectURL(new Blob(source, { "type" : "text\/xml" }));
 
-    // if (source.id) {
-    //   filename = source.id;
-    // } else if (source.class) {
-    //   filename = source.class;
-    // } else if (window.document.title) {
-    //   filename = window.document.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-    // }
+	    $('#download-image-link a.download-svg').attr({
+	    	href: url,
+	    	download: filename + '.svg'
+		}).show();
 
-    // var url = window.URL.createObjectURL(new Blob(source.source, { "type" : "text\/xml" }));
+	});
 
-    // var a = document.createElement("a");
-    $('#download-image-link').appendChild(a);
-
-    // var a = document.createElement("a");
-    // body.appendChild(a);
-    // a.setAttribute("class", "svg-crowbar");
-    // a.setAttribute("download", filename + ".svg");
-    // a.setAttribute("href", url);
-    // a.style["display"] = "none";
-    // a.click();
-
-    // setTimeout(function() {
-    //   window.URL.revokeObjectURL(url);
-    // }, 10);
-}
+});

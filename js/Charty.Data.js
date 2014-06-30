@@ -20,6 +20,16 @@
         return this;
       };
 
+      this.categories = function(arr) {
+        if (!arguments.length) return attributes.categories;
+        attributes.categories = arr;
+        return this;
+      };
+
+      this.hasCategories = function(){
+        var c = this.categories();
+        return (_.isArray(c) && !_.isEmpty(c));
+      }
 
       this.seriesNameFormat = function(value) {
         if (!arguments.length) return attributes.seriesNameFormat;
@@ -37,6 +47,14 @@
       this.parse = function(){
         var opts = { header: false };
         var arrs = $.parse(this.rawData(), opts).results;
+
+        // check to see if first row is Categorical
+        var elZero = arrs[0][0];
+        if( _.isEmpty(elZero) ){
+          // assume that the first row contains categories
+          this.categories(arrs[0].slice(1))
+          arrs.shift(); // remove the first row
+        }
 
         return _.reduce(arrs, function(memo, arr){
           var o = {name: arr[0], data: arr.slice(1)};

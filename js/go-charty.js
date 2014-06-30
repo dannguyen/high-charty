@@ -1,6 +1,6 @@
 
 var chart =  new Charty.Chart();
-var lazyUpdate = _.debounce(function(el){
+var lazyUpdate = _.debounce(function(){
 
     $("#chart-config, #data-config").each(function(){
         var formId = $(this).attr("id");
@@ -10,12 +10,8 @@ var lazyUpdate = _.debounce(function(el){
             var chartyObj = chart.data();
         }
 
-
-
         $(this).find(".form-control").each(function(){
-
             console.log(formId + ": " + $(this).attr('name'));
-
             if( $(this).prop("tagName") === 'SELECT' ){
                 var val = $(this).find(":selected").attr('value');
             }else{
@@ -37,6 +33,8 @@ var lazyUpdate = _.debounce(function(el){
 
 $(document).ready(function(){
   $('#chart-config .form-control, #data-config .form-control').change(
-    function(){ lazyUpdate(this); }
+    function(){ lazyUpdate(); }
   );
+
+  lazyUpdate();
 })

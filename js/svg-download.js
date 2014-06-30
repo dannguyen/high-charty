@@ -1,4 +1,4 @@
-createSVGContent: function(svg) {
+var x = { createSVGContent: function(svg) {
 		/*
 			Copyright (c) 2013 The New York Times
 
@@ -51,16 +51,16 @@ createSVGContent: function(svg) {
 		var favicanvas = document.getElementById("favicanvas");
 		favicanvas.width = 64;
 		favicanvas.height = 64;
-		
+
 		var faviCanvasContext = favicanvas.getContext("2d");
 		faviCanvasContext.translate(favicanvas.width / 2, favicanvas.height / 2);
-		
+
 		var svg = $.trim(document.getElementById("chartContainer").innerHTML);
 		faviCanvasContext.drawSvg(svg,-16,-8,32,32);
-		
+
 		var icon = favicanvas.toDataURL("png");
 		$("#favicon").attr("href",icon);
-		
+
 		return icon;
 	},
 	redraw: function() {
@@ -79,7 +79,7 @@ createSVGContent: function(svg) {
 		var isMultiAxis = false;
 		var colors = g.colors();
 		var i;
-		
+
 		for (i=0; i < g.series().length; i++) {
 			s = g.series()[i];
 			seriesItem = $('<div class="seriesItemGroup">\
@@ -96,12 +96,12 @@ createSVGContent: function(svg) {
 			</div>');
 			var color = s.color ? s.color.replace("#","") : colors[i].replace("#","");
 			s.color = "#" + color;
-			
+
 			seriesContainer.append(seriesItem);
 			picker = seriesItem.find("#"+this.idSafe(s.name)+"_color").colorPicker({pickerDefault: color, colors:this.allColors});
 			typer = seriesItem.find("#"+this.idSafe(s.name)+"_type");
 			axer = seriesItem.find("#"+this.idSafe(s.name)+"_check");
-			
+
 			if(g.series()[i].axis == 1) {
 				axer.prop("checked",true);
 				if(!g.yAxis()[1].color || !isMultiAxis) {
@@ -112,7 +112,7 @@ createSVGContent: function(svg) {
 			else {
 				axer.prop("checked",false);
 			}
-												
+
 			seriesItem.data("index",i);
 			picker.change(function() {
 				chart.series()[$(this).parent().data().index].color = $(this).val();
@@ -141,11 +141,11 @@ createSVGContent: function(svg) {
 				ChartBuilder.redraw();
 
 			});
-			
+
 			axer.change(function() {
 				var axis = $(this).is(':checked') ? 1 : 0;
 				chart.series()[$(this).parent().data().index].axis = axis;
-				
+
 				if(!chart.yAxis()[axis]) {
 					chart.yAxis()[axis] = {
 						domain: [null, null],
@@ -163,30 +163,30 @@ createSVGContent: function(svg) {
 						color: null
 					};
 				}
-				
+
 				var leftAxisIsUsed = false;
 				for(var i = 0; i < chart.series().length; i++) {
 					if(chart.series()[i].axis == 1) {
 						leftAxisIsUsed = true;
 					}
 				}
-				
+
 				if(chart.yAxis().length > 1 && !leftAxisIsUsed)
 				{
 					chart.yAxis().pop();
 				}
-				
+
 				chart.setYScales()
 					.setYAxes()
 					.setLineMakers();
 				ChartBuilder.redraw();
 			});
-			
+
 			chart.redraw();
 			this.makeLegendAdjustable();
 		}
-		
-		
+
+
 		var yAxisObj = [];
 		for (i = g.yAxis().length - 1; i >= 0; i--){
 			var cur = g.yAxis()[i];
@@ -199,7 +199,7 @@ createSVGContent: function(svg) {
 				formatter: cur.formatter
 			};
 		}
-		
+
 		var xAxisObj = {
 			domain: g.xAxis().domain,
 			prefix: g.xAxis().prefix,
@@ -207,14 +207,14 @@ createSVGContent: function(svg) {
 			type: g.xAxis().type,
 			formatter: g.xAxis().formatter
 		};
-		
+
 		if(isMultiAxis){
 			$("#leftAxisControls").removeClass("hide");
 		}
 		else {
 			$("#leftAxisControls").addClass("hide");
 		}
-		
+
 		var state = {
 			container: g.containerElement(),
 			colors: g.colors(),
@@ -227,7 +227,7 @@ createSVGContent: function(svg) {
 			sourceline: g.source(),
 			creditline: g.credit()
 		};
-		
+
 		//chart = g;
 		ChartBuilder.updateInterface();
 		ChartBuilder.inlineAllStyles();
@@ -264,7 +264,7 @@ createSVGContent: function(svg) {
 				break;
 			}
 		}
-		
+
 		if(hasBargrid) {
 			$("#chartContainer").css("height",
 				chart.series()[0].data.length * (chart.bargridBarThickness() + 2) + //CHANGE - MAGIC NUMBER
@@ -277,7 +277,7 @@ createSVGContent: function(svg) {
 		}
 	},
 	makeLegendAdjustable: function() {
-		
+
 		var legendLabelDrag = d3.behavior.drag()
 			.origin(Object)
 			.on("dragstart",function(d){
@@ -290,18 +290,18 @@ createSVGContent: function(svg) {
 					ChartBuilder.makeLegendAdjustable();
 					ChartBuilder.customLegendLocaion = true;
 				}
-				
+
 			})
 			.on("drag", function(d){
 				elem = d3.select(this);
 				elem.attr("x", Number(elem.attr("x")) + d3.event.dx)
 					.attr("y", Number(elem.attr("y")) + d3.event.dy);
-					
-				
+
+
 		});
 		d3.selectAll("text.legendLabel").call(legendLabelDrag);
-		
-		
+
+
 	},
 	getAllInputData: function() {
 		var d = {}, $el;
@@ -318,7 +318,7 @@ createSVGContent: function(svg) {
 		catch(e) {
 			localStorage["savedCharts"] = JSON.stringify([]);
 		}
-		
+
 		var allcharts = JSON.parse(localStorage["savedCharts"]);
 		newChart = this.getAllInputData();
 		newChart.name = name;
@@ -331,7 +331,7 @@ createSVGContent: function(svg) {
 			charts = JSON.parse(localStorage["savedCharts"]);
 		}
 		catch(e){ /* Fail Silently */}
-		
+
 		return charts;
 	},
 	loadLocalChart: function(d) {
@@ -423,3 +423,4 @@ createSVGContent: function(svg) {
 		$("#invalidDataSpan").addClass("hide");
 	}
 };
+

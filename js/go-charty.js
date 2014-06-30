@@ -6,8 +6,9 @@ var lazyUpdate = _.debounce(function(el){
         var val = $(this).val();
         var att = $(this).attr('name');
         chart[att](val);
-
     });
+
+    chart.data($("#chart-rawData").val());
 
     chart.draw("#chart-container");
 
@@ -15,7 +16,7 @@ var lazyUpdate = _.debounce(function(el){
 
 
 $(document).ready(function(){
-  $('.chart-inputs input').keyup(
+  $('.chart-inputs input, #chart-rawData').keyup(
     function(){ lazyUpdate(this); }
   );
 })

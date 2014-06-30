@@ -7,17 +7,20 @@
 
 
   var Chart = Charty.Chart = function(){
-    this.attributes = { hi: 'there!',
-      series: [{
-             name: 'dan',
-             data: [12, 29.9, 12]
-           },
-            {
-             name: 'bob',
-             data: [40, 19.9, 6]
-           },
-        ]
+    this.attributes = { data: new Charty.Data() };
+
+    this.data = function(txt){
+      if (!arguments.length){
+        return this.attributes.data.parse();
+      }else{
+        this.attributes.data.rawData(txt);
+
+        return this.attributes.data;
+      }
+
     };
+
+
   };
 
 
@@ -34,9 +37,6 @@
       config: function(val){ return({ chart: { width: val } }); },
       value: function(val){return val === '100%' ? null : val; }
     },
-    series: {
-      config: function(val){ return({ series: val }); }
-    }, // TODO
     chartType: {
       config: function(val){ return({ chart: { type: val } }); }
     },
@@ -70,7 +70,10 @@
 
 
     draw: function(el){
+
       var config = this.configChart();
+      config.series = this.data();
+
       $(el).highcharts(config);
 
      return this;

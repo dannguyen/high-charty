@@ -6,8 +6,12 @@
   <script src="js/underscore.js"></script>
 
   <script src="js/jquery.js"></script>
+  <script src="js/jquery.parse.js"></script>
+
   <script src="js/highcharts.js"></script>
   <script src="js/Charty.js"></script>
+  <script src="js/Charty.Data.js"></script>
+
 
    <link rel="stylesheet" href="css/bootstrap.css">
    <link rel="stylesheet" href="css/app.css">
@@ -16,6 +20,7 @@
 <body>
 
 
+<div id="chart-container"></div>
 
 
 <div class="chart-inputs">
@@ -28,6 +33,44 @@
   </textarea>
  --></div>
 
+
+<section class="sec">
+
+  <h5>Data</h5>
+  <textarea id='chart-rawData' name="rawData" id="" cols="80" rows="10">
+Apples,50,23,18,88
+Oranges,31,45,9,32
+  </textarea>
+<div>
+    <input type="radio" name="delimiter" value="CSV" checked> CSV
+    <input type="radio" name="delimiter" value="TSV" > TSV
+
+</div>
+
+  <section class="sec">
+
+    <div class="container">
+    <h3>Kinds of data</h3>
+
+      <div class="row">
+          <div class="col-sm-4">
+            <h5>Column-based</h5>
+              <table class="table table-bordered"> <thead> <tr> <th> Apples </th> <th> Oranges </th> </tr> </thead> <tbody> <tr> <td> 10 </td> <td> 30 </td> </tr> <tr> <td> 50 </td> <td> 80 </td> </tr> <tr> <td> 42 </td> <td> 20 </td> </tr> <tr> <td> 20 </td> <td> 33 </td> </tr> </tbody> </table>
+          </div>
+
+          <div class="col-sm-4">
+            <h5>Row-based</h5>
+
+            <table class="table table-bordered"><tbody><tr><td><strong>Apples</strong></td><td>10</td><td>50</td><td>42</td><td>20</td></tr><tr><td><strong>Oranges</strong></td><td>30</td><td>80</td><td>20</td><td>33</td></tr></tbody></table>
+          </div>
+
+
+
+      </div> <!-- row -->
+    </div> <!-- container -->
+  </section>
+
+</section>
 
 <div id="chart-container">
 

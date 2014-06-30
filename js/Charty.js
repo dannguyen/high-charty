@@ -2,7 +2,6 @@
   root.Charty = factory(root, {}, _, $);
 }(this, function(root, Charty, _, $) {
 
-  var previousChart = root.Charty;
   Charty.$ = $;
   var Chart = Charty.Chart = function(){
     this.attributes = { hi: 'there!',
@@ -22,55 +21,76 @@
 
   // chart attributes
   var chartAtts = {
-    height: function(val){ return val; },
-    series: function(val){ return val; }, // TODO
-    width: function(val){ return val === '100%' ? null : val; },
-    chartType: function(val){ return val; },
-    arrangement: function(val){ return val === 'stacked' ? 'normal' : null; }
+    categories: {
+      config: function(val){ return({ xAxis: {categories: val }}); }
+    },
+
+    height: {
+      config: function(val){ return({ chart: { height: val } }); }
+    },
+    width: {
+      config: function(val){ return({ chart: { width: val } }); },
+      value: function(val){return val === '100%' ? null : val; }
+    },
+    series: {
+      config: function(val){ return({ series: val }); }
+    }, // TODO
+    chartType: {
+      config: function(val){ return({ chart: { type: val } }); }
+    },
+    arrangement: {
+      config: function(val){ return({ plotOptions: { series: {stacking: val} } }); },
+      value: function(val){ return val === 'stacked' ? 'normal' : null; }
+    },
+
+    xAxisTitle: {
+      config: function(val){ return({ xAxis: { title: {enabled: true, text: val }}}) }
+    },
+
+    yAxisTitle: {
+      config: function(val){ return({ yAxis: { title: {enabled: true, text: val }}}) }
+    }
   }
 
-  _.each(chartAtts, function(kfoo, method){
-    Chart.prototype[method] = function(val){
-      this.attributes[method] = val
+  Chart.prototype.configChart = function(initialHash){
+    initialHash = initialHash || {};
+    var self = this;
+    return _.reduce(chartAtts, function(memo, v, k){
+      return $.extend(true, memo, self['config_' + k]() );
+    }, initialHash)
+  }
 
-      return this;
-    }
-
-    Chart.prototype["fmt_" + method] = function(){ return kfoo(this.attributes[method]); };
-  });
 
   _.extend(Chart.prototype,{
     get: function(attname){
       return this.attributes[attname];
     },
 
-    fmt: function(attname){
-      var val = this.get(attname);
-      if(attname === 'arrangement'){
-        if(val==='stacked'){
-          val = 'normal';
-        }else{
-          val = null;
-        }
-      }
-
-      return val;
-    },
 
     draw: function(el){
-      var plotOptions = { plotOptions: { series: { stacking: this.fmt_arrangement()  }} };
-      var series = { series: this.fmt_series() };
-      var chart = { chart: {
-        height: this.fmt_height(),
-        width: this.fmt_width(),
-        type: this.fmt_chartType()
-      }};
-
-      var all_opts = _.extend(series, plotOptions, chart);
-
-      $(el).highcharts(all_opts);
-
+      $(el).highcharts(this.configChart());
      return this;
+    }
+  });
+
+
+ _.each(chartAtts, function(hsh, method){
+    Chart.prototype[method] = function(val){
+      this.attributes[method] = val
+      return this;
+    }
+
+    Chart.prototype["fmt_" + method] = function(){
+      var attval = this.get(method);
+      var kfoo = hsh['value'] || function(v){ return v; }
+      return kfoo(attval);
+    };
+
+
+    Chart.prototype["config_" + method] = function(){
+      var attval = this.get(method);
+      var kzoo = hsh['config'];
+      return kzoo(this["fmt_" + method]());
     }
   });
 
@@ -78,24 +98,20 @@
   return Charty;
 }))
 
+var chart =  new Charty.Chart();
+var lazyUpdate = _.debounce(function(el){
 
-// to add:
+    var val = $(el).val();
+    var att = $(el).attr('name');
+    chart[att](val);
 
-// - legendPosition
-// - xAxisTitle
-// - yAxisTitle
-// - yAxisSpacing
-// - xAxisSpacing
-// - addSeries
+    chart.draw("#chart-container");
 
-var Series = function(_data, opts){
-  this.data = _data;
-  this.name = opts.name ;
+}, 800);
 
-  this.format = function(){
-    return({
-      data: this.data,
-      name: this.name
-    });
-  }
-}
+
+$(document).ready(function(){
+  $('.chart-inputs input').keyup(
+    function(){ lazyUpdate(this); }
+  );
+})

@@ -1,8 +1,17 @@
 
-var chart =  new Charty.Chart();
-chart.height(900);
 
-chart.height(300).width('100%').chartType('bar').draw('#chart-container');
+// chart.height(300).width(500).chartType('bar').draw('#chart-1');
 
-chart.arrangement('stacked').width(400).draw('#chart-2');
+// chart
+//     .arrangement('stacked')
+//     .width('100%')
+//     .height(300)
+//     .xAxisTitle('Whats up')
+//     .yAxisTitle('Yo Yo')
+//     .draw('#chart-2');
 
+
+// chart
+// .categories(['bob', 'dan'])
+//     .xAxisTitle('Whats down')
+//     .draw('#chart-3');

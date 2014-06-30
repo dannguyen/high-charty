@@ -5,19 +5,22 @@
   Charty.$ = $;
 
 
+  var DEFAULT_HIGHCHART_OPTS = {
+    title: { text: null },
+    credits: { enabled: false },
+    chart: { animation: false },
+    plotOptions: { series: {animation: false }}
+  }
 
   var Chart = Charty.Chart = function(){
-    this.attributes = { hi: 'there!',
-      series: [{
-             name: 'dan',
-             data: [12, 29.9, 12]
-           },
-            {
-             name: 'bob',
-             data: [40, 19.9, 6]
-           },
-        ]
+    this.attributes = { data: new Charty.Data() };
+    this.defaultConfig = DEFAULT_HIGHCHART_OPTS;
+
+    this.data = function(txt){
+      return this.attributes.data;
     };
+
+
   };
 
 
@@ -34,15 +37,15 @@
       config: function(val){ return({ chart: { width: val } }); },
       value: function(val){return val === '100%' ? null : val; }
     },
-    series: {
-      config: function(val){ return({ series: val }); }
-    }, // TODO
     chartType: {
       config: function(val){ return({ chart: { type: val } }); }
     },
-    arrangement: {
+    stackType: {
       config: function(val){ return({ plotOptions: { series: {stacking: val} } }); },
-      value: function(val){ return val === 'stacked' ? 'normal' : null; }
+      value: function(val){
+        if(val === 'stacked'){ return 'normal'; }
+        else{ return null; }
+      }
     },
 
     xAxisTitle: {
@@ -56,10 +59,20 @@
 
   Chart.prototype.configChart = function(initialHash){
     initialHash = initialHash || {};
+    var h = $.extend(true, {}, this.defaultConfig);
+    h = $.extend(true, h, initialHash);
     var self = this;
+
     return _.reduce(chartAtts, function(memo, v, k){
       return $.extend(true, memo, self['config_' + k]() );
-    }, initialHash)
+    }, h)
+  }
+
+  Chart.prototype.configChartWithData = function(h){
+    var c = this.configChart(h);
+    c.series =  this.data().parse();
+
+    return c;
   }
 
 
@@ -70,7 +83,7 @@
 
 
     draw: function(el){
-      var config = this.configChart();
+      var config = this.configChartWithData();
       $(el).highcharts(config);
 
      return this;

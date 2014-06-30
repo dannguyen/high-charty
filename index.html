@@ -6,8 +6,11 @@
   <script src="js/underscore.js"></script>
 
   <script src="js/jquery.js"></script>
+  <script src="js/jquery.parse.js"></script>
+
   <script src="js/highcharts.js"></script>
   <script src="js/Charty.js"></script>
+  <script src="js/Charty.Data.js"></script>
   <script src="js/svg-download.js"></script>
 
    <link rel="stylesheet" href="css/bootstrap.css">
@@ -18,23 +21,140 @@
 
 
 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Chart customization</h3>
 
-<div class="chart-inputs">
-  <label for="height">height</label><input type="text" name="height" value="400"></input>
-  <label for="width">width</label><input type="text" name="width" value="600"></input>
-  <label for="chartType">chartType</label><input type="text" name="chartType" value="line"></input>
-<!--   <label for="seriesd">Data</label>
-  <textarea name="seriesd">
+      <form class="form-horizontal" id="chart-config">
 
-  </textarea>
- --></div>
+        <h4>Chart structure</h4>
+        <section class="row form-group">
+          <div class="col-sm-6">
+            <label for="height">height</label>
+            <input class="form-control" type="text" name="height" value=600></input>
+          </div>
+
+          <div class="col-sm-6">
+            <label for="width">width</label>
+            <input class="form-control" type="text" name="width" value="100%"></input>
+          </div>
+        </section>
+
+         <section class="row form-group">
+            <div class="col-sm-6">
+             <label for="chartType">chartType</label>
+              <select class="form-control" name="chartType">
+                <option value="bar" selected>bar</option>
+                <option value="column">column</option>
+                <option value="line">line</option>
+              </select>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="chartType">stackType</label>
+              <select class="form-control" name="stackType">
+                <option value="grouped" selected>grouped</option>
+                <option value="stacked">stacked</option>
+              </select>
+            </div>
+          </section>
 
 
-<div id="chart-container">
+          <h4>Chart text</h4>
+          <section class="row form-group">
+            <div class="col-sm-6">
+             <label for="xAxisTitle">xAxisTitle</label>
+              <input type="text" class="form-control" name="xAxisTitle">
+            </div>
+            <div class="col-sm-6">
+             <label for="yAxisTitle">yAxisTitle</label>
+              <input type="text" class="form-control" name="yAxisTitle">
+            </div>
+          </section>
+
+        </form>
+    </div> <!-- end of chart customization -->
+
+
+  <div class="col-sm-6">
+
+    <section class="sec">
+        <form action="" class="form-inline" id="data-config">
+
+        <h3>Data Configuration</h3>
+        <h5>Raw data</h5>
+    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">
+Apples,50,23,18,88
+Oranges,31,45,9,32</textarea>
+
+<!--     <div class="form-group">
+      <input type="radio" class="form-control" name="delimiter" value="CSV" checked> CSV
+      <input type="radio" class="form-control" name="delimiter" value="TSV" > TSV
+    </div>
+ -->
+
+<!--
+        <div class="row">
+            <div class="col-sm-4">
+              <div class="radio">
+                <label>
+                  <input type="radio" class="form-control" name="seriesNameFormat" value="column">
+                  Column-based
+                </label>
+                <table class="table table-bordered"> <thead> <tr> <th> Apples </th> <th> Oranges </th> </tr> </thead> <tbody> <tr> <td> 10 </td> <td> 30 </td> </tr> <tr> <td> 50 </td> <td> 80 </td> </tr> <tr> <td> 42 </td> <td> 20 </td> </tr> <tr> <td> 20 </td> <td> 33 </td> </tr> </tbody> </table>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="radio">
+                <label>
+                  <input type="radio" class="form-control" name="seriesNameFormat" value="row" selected>
+
+                  Row-based
+                </label>
+
+                <table class="table table-bordered"><tbody><tr><td><strong>Apples</strong></td><td>10</td><td>50</td><td>42</td><td>20</td></tr><tr><td><strong>Oranges</strong></td><td>30</td><td>80</td><td>20</td><td>33</td></tr></tbody></table>
+              </div>
+            </div>
+          </div>
+          <!-- row -->
+ -->
+
+
+        </form>
+     </section>  <!-- end of data stuff-->
 
 
 
-</div>
+  </div>
+
+  </div> <!-- row -->
+
+</div> <!-- container -->
+
+
+
+
+<section class="sec">
+  <h3 style="text-align: center;">Rendered Chart</h3>
+
+  <div style="padding: 10px; border: thin solid #aaa; background: #eee">
+    <div id="chart-container" style="background: #fff;"></div>
+  </div>
+
+
+  <div class="container">
+    <h3>Chart output</h3>
+
+    <textarea name="chart-json" id="chart-json" cols="120" rows="30">
+      The chart's configuration will show up here...
+    </textarea>
+
+  </div>
+
+</section>
+
 
 
 <div id="download-image-link">
@@ -44,7 +164,9 @@
 
 
 
-<script src="js/go-charty.js"></script>
+
+  <script src="js/go-charty.js"></script>
+
 
 
 

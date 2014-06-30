@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Highcharts diagram</title>
+  <title>SkiftCharty App</title>
   <script src="js/underscore.js"></script>
 
   <script src="js/jquery.js"></script>
@@ -10,6 +10,7 @@
 
   <script src="js/highcharts.js"></script>
   <script src="js/Charty.js"></script>
+  <script src="js/Charty.Chart.js"></script>
   <script src="js/Charty.Data.js"></script>
   <script src="js/svg-download.js"></script>
   <script src="js/canvg.js"></script>
@@ -62,17 +63,28 @@
           </section>
 
 
-          <h4>Chart text</h4>
+          <h4>X-axis</h4>
           <section class="row form-group">
             <div class="col-sm-6">
-             <label for="xAxisTitle">xAxisTitle</label>
+             <label for="xAxisTitle">Title</label>
               <input type="text" class="form-control" name="xAxisTitle">
             </div>
+
+          </section>
+
+          <h4>Y-axis</h4>
+          <section class="row form-group">
             <div class="col-sm-6">
-             <label for="yAxisTitle">yAxisTitle</label>
+             <label for="yAxisTitle">Title</label>
               <input type="text" class="form-control" name="yAxisTitle">
             </div>
+
+            <div class="col-sm-6">
+             <label for="yAxisTickPixelInterval">Tick Px Interval</label>
+              <input type="text" class="form-control" value="80" name="yAxisTickPixelInterval">
+            </div>
           </section>
+
 
         </form>
     </div> <!-- end of chart customization -->
@@ -85,7 +97,7 @@
 
         <h3>Data Configuration</h3>
         <h5>Raw data</h5>
-    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">
+    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">,Fall,Winter,Spring,Summer
 Apples,50,23,18,88
 Oranges,31,45,9,32</textarea>
 
@@ -120,7 +132,6 @@ Oranges,31,45,9,32</textarea>
             </div>
           </div>
           <!-- row -->
- -->
 
 
         </form>

@@ -11,9 +11,7 @@ $(document).ready(function() {
 
 		var element = $('.highcharts-container');
 	    source.push(element.html());
-
 		var canvasContext = canvas.getContext("2d");
-		// var svg = $.trim(document.getElementById("chartContainer").innerHTML);
 		canvasContext.drawSvg(element.html(),0,0);
 
 	    var url = window.URL.createObjectURL(new Blob(source, { "type" : "text\/xml" }));

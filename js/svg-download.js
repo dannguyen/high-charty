@@ -1,4 +1,8 @@
+// This likely needs to be switched to $(document).load to have the canvas PNG work 100% of the time, but I can't get .load to work correctly
+
 $(document).ready(function() {
+
+	console.log('test');
 
 	$('#download-image-link a.prep').click(function(e) {
 		var canvas = document.getElementById('canvas');

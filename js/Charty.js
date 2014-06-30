@@ -3,21 +3,23 @@
 }(this, function(root, Charty, _, $) {
 
   Charty.$ = $;
+
+
+
   var Chart = Charty.Chart = function(){
     this.attributes = { hi: 'there!',
       series: [{
-                 name: 'dan',
-                 data: [12, 29.9, 12]
-               },
-
-                {
-                 name: 'bob',
-                 data: [40, 19.9, 6]
-               },
-
-            ]
+             name: 'dan',
+             data: [12, 29.9, 12]
+           },
+            {
+             name: 'bob',
+             data: [40, 19.9, 6]
+           },
+        ]
     };
   };
+
 
   // chart attributes
   var chartAtts = {
@@ -68,7 +70,9 @@
 
 
     draw: function(el){
-      $(el).highcharts(this.configChart());
+      var config = this.configChart();
+      $(el).highcharts(config);
+
      return this;
     }
   });
@@ -97,21 +101,3 @@
 
   return Charty;
 }))
-
-var chart =  new Charty.Chart();
-var lazyUpdate = _.debounce(function(el){
-
-    var val = $(el).val();
-    var att = $(el).attr('name');
-    chart[att](val);
-
-    chart.draw("#chart-container");
-
-}, 800);
-
-
-$(document).ready(function(){
-  $('.chart-inputs input').keyup(
-    function(){ lazyUpdate(this); }
-  );
-})

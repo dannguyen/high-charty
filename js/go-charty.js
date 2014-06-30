@@ -1,17 +1,21 @@
 
+var chart =  new Charty.Chart();
+var lazyUpdate = _.debounce(function(el){
 
-// chart.height(300).width(500).chartType('bar').draw('#chart-1');
+    $(".chart-inputs input").each(function(){
+        var val = $(this).val();
+        var att = $(this).attr('name');
+        chart[att](val);
 
-// chart
-//     .arrangement('stacked')
-//     .width('100%')
-//     .height(300)
-//     .xAxisTitle('Whats up')
-//     .yAxisTitle('Yo Yo')
-//     .draw('#chart-2');
+    });
+
+    chart.draw("#chart-container");
+
+}, 800);
 
 
-// chart
-// .categories(['bob', 'dan'])
-//     .xAxisTitle('Whats down')
-//     .draw('#chart-3');
+$(document).ready(function(){
+  $('.chart-inputs input').keyup(
+    function(){ lazyUpdate(this); }
+  );
+})

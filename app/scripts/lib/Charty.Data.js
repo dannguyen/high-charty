@@ -37,13 +37,6 @@
         return this;
       };
 
-      // transpose rawData
-      this.transpose = function(arr){
-        return Object.keys(arr[0]).map(
-          function (c) { return arr.map(function (r) { return r[c]; }); }
-        );
-      };
-
       this.parse = function(){
         var opts = { header: false };
         var arrs = $.parse(this.rawData(), opts).results;
@@ -68,4 +61,3 @@
   };
 })();
 
-var testd = new Charty.Data();

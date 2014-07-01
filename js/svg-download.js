@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+	// console.log('test');
+
 	$('#download-image-link a.prep').click(function(e) {
 		var canvas = document.getElementById('canvas');
 

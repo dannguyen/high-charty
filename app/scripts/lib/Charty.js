@@ -1,23 +1,6 @@
-(function(root, factory) {
-  root.Charty = factory(root, {}, _, $);
-}(this, function(root, Charty, _, $) {
-
+(function(root, $){
+  root.Charty = {};
   Charty.$ = $;
 
-
-  // var ChartModule = Charty.ChartModule = function(){
-  //   this.attributes = {};
-  //   this.defaultConfig = {};
-  //   this.configAccessors = {};
-  //   // this.initialize.apply(this, arguments);
-
-  // };
-
-
-    // _.extend(ChartModule, {
-    //   initialize: function(){ }
-    // })
-
-
   return Charty;
-}))
+})(window, $)

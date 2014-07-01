@@ -1,0 +1,321 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>HighCharty (YO)</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body>
+
+
+
+
+
+
+
+
+
+
+
+<!~-- just testing stumff -->
+
+<style>
+  .req{
+    padding: 10px;
+    display: block;
+  }
+</style>
+<section class="sec container-fluid">
+  <h2>Just drafting out data structures</h2>
+
+
+<table id="data-samples" class="table table-condensed">
+<thead>
+  <tr>
+    <th>Raw</th>
+    <th>Table HTML</th>
+    <th>Data-as-json</th>
+
+    <th>Normalized Table</th>
+  </tr>
+</thead>
+
+<tbody>
+
+  <tr>
+    <td class="raw">
+    <h4>Row, single</h4>
+
+<p>
+  Useful for showing an <strong>unamed</strong> set of bars, line points, pie slices, in sequential order.
+</p>
+
+
+<textarea cols="60" rows="6" data-seriesFormat="row" data-seriesNamed="false">
+10,30,20,40
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+  <tr>
+    <td class="raw">
+    <h4>Row, single, categorized</h4>
+<p>
+Same as above, with categorical labels given for the x-axis.
+</p>
+
+
+
+<textarea cols="60" rows="6" data-seriesFormat="row" data-categories="header" data-seriesNamed="false">
+Fall,Winter,Spring,Summer
+10,30,20,40
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+  <tr>
+    <td class="raw">
+    <h4>Row, series, unnamed</h4>
+
+<p>
+  Multiple rows, e.g. series, but no names.
+</p>
+
+
+<textarea cols="60" rows="6" data-seriesFormat="row" data-seriesNamed="false">
+10,30,20,40
+40,20,33,50
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+
+  <tr>
+    <td class="raw">
+    <h4>Row, series, named</h4>
+
+<p>
+  Multiple rows, e.g. series, but names exist. The <strong>first</strong> column is
+  assumed to be the <strong>names</strong> column.
+</p>
+
+
+<textarea cols="60" rows="6" data-seriesFormat="row" data-seriesNamed="true">
+Apples,10,30,20,40
+Oranges,40,20,33,50
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+
+  <tr>
+    <td class="raw">
+    <h4>Row, series, categorized</h4>
+<p>
+  This automatically assumes that the first cell is empty.
+</p>
+
+<textarea cols="60" rows="6" data-seriesFormat="row" data-categories="header" data-seriesNamed="true">
+,Fall,Winter,Spring,Summer
+Apples,10,30,20,40
+Oranges,40,20,33,50
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+  <tr>
+    <td class="raw">
+    <h4>Column, single</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+10
+30
+20
+40
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+  <tr>
+    <td class="raw">
+    <h4>Column, single, categorized</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+Fall,10
+Winter,30
+Spring,20
+Summer,40
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+  <tr>
+    <td class="raw">
+    <h4>Column, series</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+Apples,Oranges
+10,40
+30,20
+20,33
+40,50
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+  <tr>
+    <td class="raw">
+    <h4>Column, series, categorized </h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+,Apples,Oranges
+Fall,10,40
+Winter,30,20
+Spring,20,33
+Summer,40,50
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+  <tr>
+    <td class="raw">
+    <h4>X-Y, single</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+x (age),y (height)
+5,40
+12,90
+18,150
+30,155
+60,140
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+  <tr>
+    <td class="raw">
+    <h4>X-Y, series</h4>
+<textarea cols="60" rows="12" data-seriesFormat="column">
+gender,x (age),y (height)
+M,5,40
+M,12,90
+M,18,150
+M,30,155
+M,60,140
+F,5,35
+F,12,100
+F,18,120
+F,30,125
+F,60,110
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+
+  <tr>
+    <td class="raw">
+    <h4>X-Y-Z, single</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+birth rate,literacy rate,GDP
+42,10,300
+60,20,400
+30,50,1200
+25,80,3000
+10,99,6000
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+  <tr>
+    <td class="raw">
+    <h4>X-Y-Z, series</h4>
+<textarea cols="60" rows="6" data-seriesFormat="column">
+region,birth rate,literacy rate,GDP
+Europe,42,10,300
+Europe,60,20,400
+Europe,30,50,1200
+Australia,25,80,3000
+Australia,10,99,6000
+</textarea>
+    </td>
+    <td class="parsed"> _ </td>
+  </tr>
+
+
+
+
+</tbody>
+</table>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- build:js scripts/vendor.js -->
+        <!-- bower:js -->
+        <script src="scripts/vendor/underscore.js"></script>
+        <script src="scripts/vendor/jquery.js"></script>
+        <script src="scripts/vendor/jquery.parse.js"></script>
+        <script src="scripts/vendor/highcharts.js"></script>
+        <script src="scripts/vendor/director.js"></script>
+
+<!--         <script src="../bower_components/jquery/dist/jquery.js"></script> -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+
+
+
+
+
+        <!-- build:js({app,.tmp}) scripts/main.js -->
+        <script src="scripts/lib/Charty.js"></script>
+        <script src="scripts/lib/Charty.Chart.js"></script>
+        <script src="scripts/lib/Charty.Data.js"></script>
+        <script src="scripts/lib/canvg.js"></script>
+        <script src="scripts/lib/rgbcolor.js"></script>
+        <script src="scripts/lib/svg-download.js"></script>
+
+        <script src="scripts/samples.js"></script>
+
+        <!-- endbuild -->
+</body>
+</html>
+
+
+
+
+

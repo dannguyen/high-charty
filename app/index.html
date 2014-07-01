@@ -159,8 +159,10 @@ Pears,10,80,34,22</textarea>
   <a href="#" class="prep">Create image of chart</a>
   <a href="#" style="display: none;" class="download-svg">Download SVG</a>
   <a href="#" style="display: none;" class="download-png">Download PNG</a>
+  <canvas id="canvas" width="1000px" height="600px" style="display: none;"></canvas>
 </div>
-<canvas id="canvas" width="1000px" height="600px" style="display: none;"></canvas>
+
+<div id="color-picker"></div>
 
 
 
@@ -189,7 +191,8 @@ Pears,10,80,34,22</textarea>
         <script src="scripts/vendor/jquery.parse.js"></script>
         <script src="scripts/vendor/highcharts.js"></script>
         <script src="scripts/vendor/director.js"></script>
-
+        <script src="../bower_components/really-simple-colorpicker/jquery.colorPicker.js"></script>
+<!--         <script src="../bower_components/jquery/dist/jquery.js"></script> -->
 
         <!-- endbower -->
         <!-- endbuild -->

@@ -1,4 +1,3 @@
-
 var chart =  new Charty.Chart();
 var lazyUpdate = _.debounce(function(){
 

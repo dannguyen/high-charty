@@ -71,7 +71,8 @@
   // [{ name: 'Horror', data: [{x: 2, y: 3}] }, {name: 'Romance', data: []}]
   DataParser.prototype.toHighChartsFormat = function(orgArr, dataOpts){
     var self = this;
-    var keyMap = _.omit(dataOpts, 'seriesKey')
+    var keyMap = _.omit(dataOpts, 'seriesKey');
+    var sKey = dataOpts.seriesKey || 'seriesKey'; // use seriesKey as a header by default
     var groupedArr = self.groupByKey(orgArr, dataOpts.seriesKey);
 
     // ugh inefficient to loop again

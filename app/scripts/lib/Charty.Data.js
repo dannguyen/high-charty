@@ -3,6 +3,7 @@
   var Charty = window.Charty || {}
   var Data = Charty.Data = function(){
       var attributes = this.attributes = {};
+      this.parser = new Charty.DataParser();
 
       attributes.rawData = "";
       attributes.delimiter = ",";
@@ -37,25 +38,12 @@
         return this;
       };
 
-      this.parse = function(){
-        var opts = { header: false };
-        var arrs = $.parse(this.rawData(), opts).results;
+      this.parse = function(opts){
+        var arrs = this.parser.parseRawCSV(this.rawData());
+        var dataset = this.parser.arraysToFlatDataSet(arrs);
+        opts = opts || {x: 'x', y: 'y', seriesKey: 'seriesKey'};
 
-        // check to see if first row is Categorical
-        var elZero = arrs[0][0];
-        if( _.isEmpty(elZero) ){
-          // assume that the first row contains categories
-          this.categories(arrs[0].slice(1))
-          arrs.shift(); // remove the first row
-        }
-
-        return _.reduce(arrs, function(memo, arr){
-          var o = {name: arr[0], data: arr.slice(1)};
-          memo.push(o);
-
-          return memo;
-        }, []);
-
+        return this.parser.toHighChartsFormat(dataset, opts);
       };
 
   };

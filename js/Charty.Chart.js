@@ -29,6 +29,13 @@
   };
 
   Chart.prototype.configAccessors = {
+    colors: {
+      config: function(val){ return({ colors: val })},
+      value: function(val){
+        // assume it to be either an Array or a comma-delimited string
+        return _.isArray(val) ? val : val.split(',');
+      }
+    },
     height: {
       config: function(val){ return({ chart: { height: val } }); }
     },

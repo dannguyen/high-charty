@@ -11,7 +11,6 @@ var lazyUpdate = _.debounce(function(){
         }
 
         $(this).find(".form-control").each(function(){
-            console.log(formId + ": " + $(this).attr('name'));
             if( $(this).prop("tagName") === 'SELECT' ){
                 var val = $(this).find(":selected").attr('value');
             }else{

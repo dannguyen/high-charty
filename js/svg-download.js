@@ -40,20 +40,20 @@ $(document).ready(function() {
 	// URL parsing
 	// --------------------------------
 
-	function getQueryParameter(name) {
-	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	        results = regex.exec(location.search);
-	    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+	// function getQueryParameter(name) {
+	//     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	//     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+	//         results = regex.exec(location.search);
+	//     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	// }
 
-	var queryHeight = getQueryParameter(height);
-	var queryWidth = getQueryParameter(width);
-	var queryChartType = getQueryParameter();
-	var queryStackType = getQueryParameter();
-	var queryXAxisTitle = getQueryParameter();
-	var queryYAxisTitle = getQueryParameter();
-	var queryYAxisTickPixelInterval = getQueryParameter();
+	// var queryHeight = getQueryParameter();
+	// var queryWidth = getQueryParameter();
+	// var queryChartType = getQueryParameter();
+	// var queryStackType = getQueryParameter();
+	// var queryXAxisTitle = getQueryParameter();
+	// var queryYAxisTitle = getQueryParameter();
+	// var queryYAxisTickPixelInterval = getQueryParameter();
 
 
 

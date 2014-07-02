@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Nicely flattened, categorical axis",
+    "rawData": "year,country,pop\n1700,US,50\n1800,US,64\n1900,US,78\n1700,China,83\n1800,China,114\n1900,China,158",
+    "chartyOptions": {},
+    "dataOptions": {
+      "seriesKey": "year",
+      "name": "country",
+      "y": "pop"
+    }
+  },
+  {
+    "title": "Switch up series and category",
+    "rawData": "year,country,pop\n1700,US,50\n1800,US,64\n1900,US,78\n1700,China,83\n1800,China,114\n1900,China,158",
+    "chartyOptions": {},
+    "dataOptions": {
+      "seriesKey": "country",
+      "name": "year",
+      "y": "pop"
+    }
+  }
+
+]

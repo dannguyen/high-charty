@@ -74,7 +74,16 @@
     var self = this;
 //   because HighCharts 3.0 API specifies :name as the
 //    key for what we think of as :category
+
     var keyMap = {x: dataOpts.xKey, y: dataOpts.yKey, z: dataOpts.zKey, name: dataOpts.categoryKey}
+
+    keyMap = _.reduce(keyMap, function(memo, v, k){
+      if(!_.isUndefined(v)){
+        memo[k] = v;
+      }
+      return memo;
+    }, {});
+
 
 
     var sKey = dataOpts.seriesKey || 'seriesKey'; // use seriesKey as a header by default

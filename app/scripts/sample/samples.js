@@ -10,7 +10,8 @@ $(document).ready(function(){
       var dataOpts = row.dataOptions;
       var chartOpts = row.chartyOptions; // not used...yet
       var _a = parser.parseRawCSV(row.rawData);
-      var _b = parser.arraysToFlatDataSet(_a);
+      var _a0 = _a.shift();
+      var _b = parser.arraysToFlatDataSet(_a, _a0);
       var _c = parser.toHighChartsFormat(_b, dataOpts );
 
 

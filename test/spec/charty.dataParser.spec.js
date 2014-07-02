@@ -45,14 +45,14 @@
 
 
           describe('Chart.DataParser.arraysToFlatDataSet', function(){
-            var arr = [['x', 'y', 'series', 'category'],
-                [10, 100, 'Apples', 'Winter'],
+            var arr = [[10, 100, 'Apples', 'Winter'],
                 [22, 200, 'Oranges', 'Winter']];
+            var headers = ['x', 'y', 'series', 'category'];
 
             it('maps values to first row of array', function(){
-              var h = parser.arraysToFlatDataSet(arr)[1];
+              var h = parser.arraysToFlatDataSet(arr, headers);
 
-              h.should.deep.equal(
+              h[1].should.deep.equal(
                 {x: 22, y: 200, series: 'Oranges', category: 'Winter'});
             });
           });
@@ -100,7 +100,7 @@
 
             it('conveniently returns a Highcharts-friendly object', function(){
               var seriesarr = parser.toHighChartsFormat( arr,
-                { x: 'year', y: 'gdp', seriesKey: 'country'}
+                { xKey: 'year', yKey: 'gdp', seriesKey: 'country'}
               )
 
               seriesarr.should.deep.equal(

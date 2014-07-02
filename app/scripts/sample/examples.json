@@ -5,8 +5,8 @@
     "chartyOptions": {},
     "dataOptions": {
       "seriesKey": "year",
-      "name": "country",
-      "y": "pop"
+      "categoryKey": "country",
+      "yKey": "pop"
     }
   },
   {
@@ -15,8 +15,8 @@
     "chartyOptions": {},
     "dataOptions": {
       "seriesKey": "country",
-      "name": "year",
-      "y": "pop"
+      "categoryKey": "year",
+      "yKey": "pop"
     }
   }
 

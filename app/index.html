@@ -19,16 +19,6 @@
     <body>
 
 
-
-
-
-
-
-
-
-
-
-
 <div class="container">
   <div class="row">
     <div class="col-sm-6">
@@ -83,7 +73,6 @@
              <label for="xAxisTitle">Title</label>
               <input type="text" class="form-control" name="xAxisTitle">
             </div>
-
           </section>
 
           <h4>Y-axis</h4>
@@ -108,16 +97,36 @@
 
     <section class="sec">
         <form action="" class="form-inline" id="data-config">
-
         <h3>Data Configuration</h3>
         <h5>Raw data</h5>
-    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">seriesKey,name,y
-Apples,Fall,48
-Apples,Winter,82
-Oranges,Fall,34
-Oranges,Winter,98
-Pears,Fall,45
-Pears,Winter,149</textarea>
+    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">seriesKey,categoryKey,yKey,zKey
+fruit,season,quantity,price
+Apples,Fall,48,1.00
+Apples,Winter,82,1.50
+Oranges,Fall,34,2.25
+Oranges,Winter,98,3.58
+Pears,Fall,45,1.75
+Pears,Winter,149,2.10</textarea>
+<!--
+
+<section class="row form-group">
+  <div class="col-sm-4">
+      <label for="seriesKey">Series</label>
+      <input type="text" class="form-control" name="seriesKey" value="fruit">
+  </div>
+  <div class="col-sm-4">
+      <label for="name">Category</label>
+      <input type="text" class="form-control" name="categoryKey" value="season">
+  </div>
+  <div class="col-sm-4">
+      <label for="yKey">Y</label>
+      <input type="text" class="form-control" name="yKey" value="quantity">
+  </div>
+</section>
+
+ -->
+
+
 
 
         </form>

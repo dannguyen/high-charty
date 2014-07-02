@@ -6,10 +6,11 @@
   };
 
 
-  // returns an Array
+  // returns an Array of Arrays
   DataParser.prototype.parseRawCSV = function(rawcsv){
     return $.parse(rawcsv, { header: false }).results;
   }
+
 
   DataParser.prototype.transposeArray = function(arr){
     return Object.keys(arr[0]).map(
@@ -17,18 +18,18 @@
     );
   }
 
-  // {arr} is an Array of Arrays in which the first row
-  // contains the headers/attributes
+
+  // {arrs} is an Array of Arrays
+  // {headers} is the ostensible headers row for {arrs}
+  //   in which the first row contains the headers/attributes
   //
-  //   arr = [['x', 'y'], [0, 0], [2, 5]]
+  //   arrs = [[0, 0], [2, 5]]
+  //   headers = ['x', 'y']
   //
   // return: An Array of Hashes
   //  [{x: 0, y: 0}, {x: 2, y: 5}]
-
-  DataParser.prototype.arraysToFlatDataSet = function(arr){
-    var headers = arr[0];
-
-    return _.map( arr.slice(1), function(row){
+  DataParser.prototype.arraysToFlatDataSet = function(arrs, headers){
+    return _.map( arrs, function(row){
       return _.object(headers, row);
     });
   }
@@ -71,7 +72,11 @@
   // [{ name: 'Horror', data: [{x: 2, y: 3}] }, {name: 'Romance', data: []}]
   DataParser.prototype.toHighChartsFormat = function(orgArr, dataOpts){
     var self = this;
-    var keyMap = _.omit(dataOpts, 'seriesKey');
+//   because HighCharts 3.0 API specifies :name as the
+//    key for what we think of as :category
+    var keyMap = {x: dataOpts.xKey, y: dataOpts.yKey, z: dataOpts.zKey, name: dataOpts.categoryKey}
+
+
     var sKey = dataOpts.seriesKey || 'seriesKey'; // use seriesKey as a header by default
     var groupedArr = self.groupByKey(orgArr, dataOpts.seriesKey);
 

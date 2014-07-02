@@ -7,7 +7,6 @@
 
       attributes.rawData = "";
       attributes.delimiter = ",";
-      attributes.seriesNameFormat = "row"; // where the name of the series is located
 
       this.rawData = function(value) {
         if (!arguments.length) return attributes.rawData;
@@ -21,27 +20,69 @@
         return this;
       };
 
-      this.categories = function(arr) {
-        if (!arguments.length) return attributes.categories;
-        attributes.categories = arr;
+      this.hasCategories = function() {
+        return !(_.isUndefined(this.categoryKey()));
+      };
+
+      this.xKey = function(val) {
+       if (!arguments.length) return attributes.xKey;
+        attributes.xKey = val;
         return this;
       };
 
-      this.hasCategories = function(){
-        var c = this.categories();
-        return (_.isArray(c) && !_.isEmpty(c));
+      this.yKey = function(val) {
+       if (!arguments.length) return attributes.yKey;
+        attributes.yKey = val;
+        return this;
+      };
+
+
+      this.zKey = function(val) {
+       if (!arguments.length) return attributes.zKey;
+        attributes.zKey = val;
+        return this;
+      };
+
+      this.categoryKey = function(val) {
+       if (!arguments.length) return attributes.categoryKey;
+        attributes.categoryKey = val;
+        return this;
+      };
+
+
+      this.seriesKey = function(val) {
+       if (!arguments.length) return attributes.seriesKey;
+        attributes.seriesKey = val;
+        return this;
+      };
+
+
+
+
+
+//////////////
+
+      this.mapOpts = function(hMap, hdrs){
+        var self = this;
+        var z = _.object(_.zip(hMap, hdrs));
+        _.each(z, function(v, k){
+          self[k](v);
+        })
+        return z;
       }
-
-      this.seriesNameFormat = function(value) {
-        if (!arguments.length) return attributes.seriesNameFormat;
-        attributes.seriesNameFormat = value;
-        return this;
-      };
 
       this.parse = function(opts){
         var arrs = this.parser.parseRawCSV(this.rawData());
-        var dataset = this.parser.arraysToFlatDataSet(arrs);
-        opts = opts || {x: 'x', y: 'y', seriesKey: 'seriesKey'};
+        // watch out, this modifies arrs, and this._Key() attributes
+        var headersMap = arrs.shift();
+        var headers = arrs.shift();
+
+
+        var dataset = this.parser.arraysToFlatDataSet(arrs, headers);
+        // TK this should probably not be passed in, there's no need
+        // to overrie it outside of what's done in parseRawCSV
+
+        opts = this.mapOpts(headersMap, headers);
 
         return this.parser.toHighChartsFormat(dataset, opts);
       };

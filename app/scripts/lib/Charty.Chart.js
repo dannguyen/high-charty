@@ -90,7 +90,7 @@
    // adjust Chart attributes based on data structure
    // TK-spaghetti there has to be a better place to do this
     if(this.data().hasCategories()){
-      $.extend(c, { xAxis: { categories: this.data().categories() } })
+      $.extend(c, { xAxis: { categories: true  } })
     }
 
     return c;

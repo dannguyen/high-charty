@@ -74,8 +74,8 @@
       this.parse = function(opts){
         var arrs = this.parser.parseRawCSV(this.rawData());
         // watch out, this modifies arrs, and this._Key() attributes
-        var headersMap = arrs.shift();
-        var headers = arrs.shift();
+        var headersMap = arrs[0];
+        var headers = arrs[1];
 
 
         var dataset = this.parser.arraysToFlatDataSet(arrs, headers);
@@ -84,7 +84,7 @@
 
         opts = this.mapOpts(headersMap, headers);
 
-        return this.parser.toHighChartsFormat(dataset, opts);
+        return this.parser.toHighChartsFormat(dataset.slice(2), opts);
       };
 
   };

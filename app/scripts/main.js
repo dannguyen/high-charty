@@ -1,23 +1,41 @@
-// Sample router
-// from: https://github.com/flatiron/director
+var chart =  new Charty.Chart();
+var lazyUpdate = _.debounce(function(){
 
-var author = function () { console.log("author"); };
-      var books = function () { console.log("books"); };
-      var viewBook = function (bookId) {
-        console.log("viewBook: bookId is populated: " + bookId);
-      };
+    $("#chart-config, #data-config").each(function(){
+        var formId = $(this).attr("id");
+        if(formId === 'chart-config'){
+            var chartyObj = chart;
+        }else if(formId === 'data-config'){
+            var chartyObj = chart.data();
+        }
 
-      var routes = {
-        '/author': author,
-        '/author/:lastName/:firstName': function(lastName, firstName){
-          console.log("This is the author page for: " + firstName + " " + lastName);
-        },
-        '/books': [books, function() {
-          console.log("An inline route handler.");
-        }],
-        '/books/view/:bookId': viewBook
-      };
+        $(this).find(".form-control").each(function(){
+            if( $(this).prop("tagName") === 'SELECT' ){
+                var val = $(this).find(":selected").attr('value');
+            }else{
+                var val = $(this).val();
+            }
+            var att = $(this).attr('name');
 
-      var router = Router(routes);
+            chartyObj[att](val);
+        });
+    });
 
-      router.init();
+
+    chart.draw("#chart-container");
+
+// TK: figure why this is a circular reference    console.log(chart.currentlyDrawnConfig())
+//    $("#chart-json").text(JSON.stringify(chart.currentlyDrawnConfig(), null, 4));
+
+}, 800);
+
+
+$(document).ready(function(){
+  $('#chart-config .form-control, #data-config .form-control').change(
+    function(){ lazyUpdate(); }
+  );
+
+  lazyUpdate();
+})
+
+

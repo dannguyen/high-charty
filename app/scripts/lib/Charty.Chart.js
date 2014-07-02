@@ -19,13 +19,30 @@
     }
   }
 
-  var Chart = Charty.Chart = function(){
-    this.attributes = { data: new Charty.Data() };
+  var Chart = Charty.Chart = function(h){
+    this.attributes = h || { };
     this.defaultConfig = DEFAULT_HIGHCHART_OPTS;
+    this.attributes._currentlyDrawnConfig = {};
 
-    this.data = function(txt){
+    this.data = function(){
       return this.attributes.data;
     };
+
+    this.rawData = function(v){
+      return this.data().rawData(v);
+    };
+
+    this.currentlyDrawnConfig = function(value){
+      if (!arguments.length){
+        return this.attributes._currentlyDrawnConfig;
+      }else{
+        this.attributes._currentlyDrawnConfig = value;
+        return this;
+      }
+    }
+
+    this.attributes.data = new Charty.Data();
+
   };
 
   Chart.prototype.configAccessors = {
@@ -33,7 +50,7 @@
       config: function(val){ return({ colors: val })},
       value: function(val){
         // assume it to be either an Array or a comma-delimited string
-        return _.isArray(val) ? val : val.split(',');
+        return _.isArray(val) ? val : (val + '').split(',');
       }
     },
     height: {
@@ -85,7 +102,7 @@
 
   Chart.prototype.configChartWithData = function(h){
     var c = this.configChart(h);
-    c.series =  this.data().parse();
+    c["series"] =  this.data().parse();
 
    // adjust Chart attributes based on data structure
    // TK-spaghetti there has to be a better place to do this
@@ -94,13 +111,15 @@
     }
 
     return c;
-  }
+  };
 
 
   _.extend(Chart.prototype,{
     draw: function(el){
-      var config = this.configChartWithData();
-      $(el).highcharts(config);
+      var cconfig = this.configChartWithData();
+      this.currentlyDrawnConfig(cconfig);
+
+      $(el).highcharts(cconfig);
 
      return this;
     }
@@ -110,7 +129,6 @@
  _.each(Chart.prototype.configAccessors, function(hsh, method){
     Chart.prototype[method] = function(value){
       if (!arguments.length){
-
         return this.attributes[method];
       }else{
         this.attributes[method] = value;

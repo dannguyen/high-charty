@@ -18,7 +18,7 @@
     </head>
     <body>
 
-
+<div id="the-content">
 <div class="container">
   <div class="row">
     <div class="col-sm-6">
@@ -107,28 +107,6 @@ Oranges,Fall,34,2.25
 Oranges,Winter,98,3.58
 Pears,Fall,45,1.75
 Pears,Winter,149,2.10</textarea>
-<!--
-
-<section class="row form-group">
-  <div class="col-sm-4">
-      <label for="seriesKey">Series</label>
-      <input type="text" class="form-control" name="seriesKey" value="fruit">
-  </div>
-  <div class="col-sm-4">
-      <label for="name">Category</label>
-      <input type="text" class="form-control" name="categoryKey" value="season">
-  </div>
-  <div class="col-sm-4">
-      <label for="yKey">Y</label>
-      <input type="text" class="form-control" name="yKey" value="quantity">
-  </div>
-</section>
-
- -->
-
-
-
-
         </form>
      </section>  <!-- end of data stuff-->
 
@@ -165,7 +143,7 @@ Pears,Winter,149,2.10</textarea>
 
 </section>
 
-
+</div> <!-- #the-content -->
 
 <div id="download-image-link">
   <a href="#" class="prep">Create image of chart</a>
@@ -202,9 +180,10 @@ Pears,Winter,149,2.10</textarea>
         <script src="scripts/vendor/jquery.js"></script>
         <script src="scripts/vendor/jquery.parse.js"></script>
         <script src="scripts/vendor/highcharts.js"></script>
-        <script src="scripts/vendor/director.js"></script>
+        <script src="scripts/vendor/page.router.js"></script>
+
         <script src="../bower_components/really-simple-colorpicker/jquery.colorPicker.js"></script>
-<!--         <script src="../bower_components/jquery/dist/jquery.js"></script> -->
+
 
         <!-- endbower -->
         <!-- endbuild -->
@@ -222,8 +201,9 @@ Pears,Winter,149,2.10</textarea>
         <script src="scripts/lib/rgbcolor.js"></script>
         <script src="scripts/lib/svg-download.js"></script>
 
-        <script src="scripts/go-charty.js"></script>
         <script src="scripts/main.js"></script>
+        <script src="scripts/router.js"></script>
+
         <!-- endbuild -->
 </body>
 </html>

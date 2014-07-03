@@ -19,146 +19,10 @@
     <body>
 
 <div id="the-content">
-<div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <h3>Chart customization</h3>
-
-      <form class="form-horizontal" id="chart-config">
-
-        <h4>Chart structure</h4>
-        <section class="row form-group">
-          <div class="col-sm-6">
-            <label for="height">height</label>
-            <input class="form-control" type="text" name="height" value=600></input>
-          </div>
-
-          <div class="col-sm-6">
-            <label for="width">width</label>
-            <input class="form-control" type="text" name="width" value="100%"></input>
-          </div>
-        </section>
-
-         <section class="row form-group">
-            <div class="col-sm-6">
-             <label for="chartType">chartType</label>
-              <select class="form-control" name="chartType">
-                <option value="area">area</option>
-                <option value="bar" selected>bar</option>
-                <option value="column">column</option>
-                <option value="line">line</option>
-                <option value="pie">pie</option>
-                <option value="scatter">scatter</option>
-              </select>
-            </div>
-
-            <div class="col-sm-6">
-              <label for="chartType">stackType</label>
-              <select class="form-control" name="stackType">
-                <option value="grouped" selected>grouped</option>
-                <option value="stacked">stacked</option>
-              </select>
-            </div>
-          </section>
-
-          <section>
-            <label for="colors">Colors</label>
-            <input type="text" class="form-control" name="colors" value="#6699cc,#003366,#EAD333,#3CDABA,#B65A4A">
-          </section>
-
-
-          <h4>X-axis</h4>
-          <section class="row form-group">
-            <div class="col-sm-6">
-             <label for="xAxisTitle">Title</label>
-              <input type="text" class="form-control" name="xAxisTitle">
-            </div>
-          </section>
-
-          <h4>Y-axis</h4>
-          <section class="row form-group">
-            <div class="col-sm-6">
-             <label for="yAxisTitle">Title</label>
-              <input type="text" class="form-control" name="yAxisTitle">
-            </div>
-
-            <div class="col-sm-6">
-             <label for="yAxisTickPixelInterval">Tick Px Interval</label>
-              <input type="text" class="form-control" value="80" name="yAxisTickPixelInterval">
-            </div>
-
-            <div class="col-sm-6">
-             <label for="yAxisMin">yAxis min</label>
-              <input type="text" class="form-control" value="0" name="yAxisMin">
-            </div>
-
-          </section>
-
-
-        </form>
-    </div> <!-- end of chart customization -->
-
-
-  <div class="col-sm-6">
-
-    <section class="sec">
-        <form action="" class="form-inline" id="data-config">
-        <h3>Data Configuration</h3>
-        <h5>Raw data</h5>
-    <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">seriesKey,categoryKey,yKey,zKey
-fruit,season,quantity,price
-Apples,Fall,48,1.00
-Apples,Winter,82,1.50
-Oranges,Fall,34,2.25
-Oranges,Winter,98,3.58
-Pears,Fall,45,1.75
-Pears,Winter,149,2.10</textarea>
-        </form>
-     </section>  <!-- end of data stuff-->
-
-
-
-  </div>
-
-  </div> <!-- row -->
-
-
-
-
-</div> <!-- container -->
-
-
-
-
-<section class="sec">
-  <h3 style="text-align: center;">Rendered Chart</h3>
-
-  <div style="padding: 10px; border: thin solid #aaa; background: #eee">
-    <div id="chart-container" style="background: #fff;"></div>
-  </div>
-
-
-  <div class="container">
-    <h3>Chart output</h3>
-
-    <textarea name="chart-json" id="chart-json" cols="120" rows="30">
-      The chart's configuration will show up here...
-    </textarea>
-
-  </div>
-
-</section>
 
 </div> <!-- #the-content -->
 
-<div id="download-image-link">
-  <a href="#" class="prep">Create image of chart</a>
-  <a href="#" style="display: none;" class="download-svg">Download SVG</a>
-  <a href="#" style="display: none;" class="download-png">Download PNG</a>
-  <canvas id="canvas" width="1000px" height="600px" style="display: none;"></canvas>
-</div>
 
-<div id="color-picker"></div>
 
 
 
@@ -199,6 +63,8 @@ Pears,Winter,149,2.10</textarea>
 
 
         <!-- build:js({app,.tmp}) scripts/main.js -->
+
+
         <script src="scripts/lib/Charty.js"></script>
         <script src="scripts/lib/Charty.Chart.js"></script>
         <script src="scripts/lib/Charty.DataParser.js"></script>

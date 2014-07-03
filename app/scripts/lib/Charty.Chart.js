@@ -3,9 +3,16 @@
   var Charty = window.Charty || {};
 
   var DEFAULT_HIGHCHART_OPTS = {
+
     title: { text: null },
+    colors: ['#6699cc','#003366','#EAD333','#3CDABA','#B65A4A'],
     credits: { enabled: false },
-    chart: { animation: false },
+    chart: { animation: false,
+      style: {
+        fontFamily: "'Helvetica Neue', 'Helvetica', Arial, sans-serif",
+        fontSize: '13px'
+      }
+    },
     plotOptions: { series: {animation: false }},
     tooltip: {
       enabled: true,
@@ -77,6 +84,14 @@
 
     yAxisTitle: {
       config: function(val){ return({ yAxis: { title: {enabled: true, text: val }}}) }
+    },
+
+    yAxisMin: {
+      config: function(val){ return({yAxis: {min: val }})},
+      value: function(val){
+        if(val === 'auto'){ return null; }
+        else{ return val; }
+      }
     },
 
     yAxisTickPixelInterval: {

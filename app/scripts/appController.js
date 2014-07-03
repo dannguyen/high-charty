@@ -2,6 +2,34 @@
 var appController = window.appController = {};
 appController.contentEl = '#the-content';
 
+appController.routeFoo =  function(){
+  var hashPath = window.location.hash;
+  if(hashPath.match(/^#charts/)){
+    console.log('start chartUrl/');
+    this.clearPage();
+    this.renderTemplateUntoPage('chartUrl');
+    var qm = hashPath.match(/charts\?(.+)/)
+
+    if(qm){
+          var querystring = qm[1];
+          console.log('query: ' + querystring)
+          var queryOpts =  qs.parse(querystring);
+          var chart = new Charty.Chart(queryOpts);
+          chart.rawData("yKey\nditto\n10\n20\n50\n30");
+          chart.draw("#chart-container");
+    }else{
+      $('#chart-container').html("<p>You must enter a query string</p>")
+    }
+
+  }else{
+    console.log('chart Form')
+    this.clearPage();
+    this.renderTemplateUntoPage('chartForm')
+    this.chartForm();
+  }
+}
+
+
 // http://stackoverflow.com/a/13029597
 appController.require_template = function(templateName) {
     var template = $('#template_' + templateName);

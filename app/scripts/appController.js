@@ -1,44 +1,9 @@
 
-
-
-
-
-var RouterFoo = window.RouterFoo = {};
-RouterFoo.page = page;  // namespacing because this makes me nervous
-
-RouterFoo.page('/chartUrl', function(ctx){
-  console.log('start chartUrl/');
-  RouterFoo.clearPage();
-  RouterFoo.require_template('chartUrl');
-  RouterFoo.renderTemplateUntoPage('chartUrl');
-  console.log(ctx)
-  console.log('query: ' + ctx.querystring)
-   ctx.query = qs.parse(ctx.querystring);
-  var chart = new Charty.Chart(ctx.query);
-  chart.rawData("yKey\nditto\n10\n20\n50\n30");
-  chart.draw("#chart-container");
-
-  console.log('end chartUrl/');
-});
-
-
-
-
-RouterFoo.page('/', function(){
-  console.log('start chartform');
-  RouterFoo.clearPage();
-  RouterFoo.require_template('chartForm');
-  RouterFoo.renderTemplateUntoPage('chartForm')
-  RouterFoo.chartForm();
-  console.log('end chartform');
-})
-
-
-
-RouterFoo.contentEl = '#the-content';
+var appController = window.appController = {};
+appController.contentEl = '#the-content';
 
 // http://stackoverflow.com/a/13029597
-RouterFoo.require_template = function(templateName) {
+appController.require_template = function(templateName) {
     var template = $('#template_' + templateName);
     if (template.length === 0) {
         var tmpl_dir = '/templates';
@@ -60,7 +25,7 @@ RouterFoo.require_template = function(templateName) {
     }
 }
 
-RouterFoo.renderTemplateUntoPage = function(templateName){
+appController.renderTemplateUntoPage = function(templateName){
   this.require_template(templateName);
   var tfoo = _.template($('#template_' + templateName).html());
 
@@ -68,11 +33,11 @@ RouterFoo.renderTemplateUntoPage = function(templateName){
 }
 
 
-RouterFoo.clearPage = function(){
+appController.clearPage = function(){
   $(this.contentEl).html();
 }
 
-RouterFoo.chartForm = function(){
+appController.chartForm = function(){
   var chart =  new Charty.Chart();
   var lazyUpdate = _.debounce(function(){
       $("#chart-config, #data-config").each(function(){

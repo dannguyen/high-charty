@@ -23,39 +23,61 @@
           },
           oranges: {
             object: function(v){ return {fruits: { oranges: v}}   }
+          },
+          childFruit: {
+            object: 'component'
           }
         }
       });
 
       var xc = new XComponent({apples: 20, oranges: 5});
 
-      describe("getExportedValue()", function(){
+      describe("getFormattedValue()", function(){
         it("uses the defined .value function", function(){
           xc.get('apples').should.equal( 20 );
-          xc.getExportedValue('apples').should.equal("20 bushels.")
+          xc.getFormattedValue('apples').should.equal("20 bushels.")
         });
 
         it("returns get(key) by default", function(){
           xc.get('oranges').should.equal( 5 );
-          xc.getExportedValue('oranges').should.equal(5);
+          xc.getFormattedValue('oranges').should.equal(5);
         });
       });
 
-      describe("getExportedObject()", function(){
+      describe("getFormattedObject()", function(){
         it("uses the defined .object function", function(){
-          xc.getExportedObject('apples').should.deep.equal( {fruits: {apples: "20 bushels." }}  );
-          xc.getExportedObject('oranges').should.deep.equal( {fruits: {oranges: 5 }}  );
+          xc.getFormattedObject('apples').should.deep.equal( {fruits: {apples: "20 bushels." }}  );
+          xc.getFormattedObject('oranges').should.deep.equal( {fruits: {oranges: 5 }}  );
         });
       });
 
 
-      describe("exportToHash()", function(){
+      describe("serializeFormattedAttributes()", function(){
         it("returns a Hash from registeredChartyAttributes", function(){
-          xc.exportToHash().should.deep.equal(
+          xc.serializeFormattedAttributes().should.deep.equal(
             { fruits: { apples: "20 bushels.", oranges: 5}}
           );
         });
+      });
 
+
+      describe("children components", function(){
+        var childComp = new XComponent({oranges: 42});
+        var parentComp = new XComponent({oranges: 99, childFruit: childComp});
+
+        it('recursively serializes', function(){
+          childComp.serializeFormattedAttributes().should.deep.equal({fruits: {oranges: 42}});
+
+          parentComp.serializeFormattedAttributes().should.deep.equal({
+                      fruits: {
+                        oranges: 99
+                      },
+                      childFruit: {
+                        fruits: {oranges: 42 }
+                      }
+          });
+
+        });
       });
 
 

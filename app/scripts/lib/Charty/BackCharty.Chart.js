@@ -27,11 +27,7 @@
 }
 
 
-
-
-
   BackCharty.Chart = BackCharty.Component.extend({
-
     draw: function(el){
       var exportedConfig = this.exportToHash();
       exportedConfig.series = this.getProcessedData();
@@ -41,10 +37,64 @@
 
     getProcessedData: function(){
       return( [{data: [{ y: 20 }, {y: 8}, {y:31} ] }] );
+    },
+
+    registeredChartyAttributes: {
+      colors: {
+        object: function(val){ return({ colors: val })},
+        value: function(val){
+          // assume it to be either an Array or a comma-delimited string
+          return _.isArray(val) ? val : (val + '').split(',');
+        }
+      },
+      height: {
+        object: function(val){ return({ chart: { height: val } }); }
+      },
+      width: {
+        object: function(val){ return({ chart: { width: val } }); },
+        value: function(val){return val === '100%' ? null : val; }
+      },
+      chartType: {
+        object: function(val){ return({ chart: { type: val } }); }
+      },
+      stackType: {
+        object: function(val){ return({ plotOptions: { series: {stacking: val} } }); },
+        value: function(val){
+          if(val === 'stacked'){ return 'normal'; }
+          else{ return null; }
+        }
+      },
+
+      xAxisTitle: {
+        object: function(val){ return({ xAxis: { title: {enabled: true, text: val }}}) }
+      },
+
+      yAxisTitle: {
+        object: function(val){ return({ yAxis: { title: {enabled: true, text: val }}}) }
+      },
+
+      yAxisMin: {
+        object: function(val){ return({yAxis: {min: val }})},
+        value: function(val){
+          if(val === 'auto'){ return null; }
+          else{ return val; }
+        }
+      },
+
+      yAxisTickPixelInterval: {
+        object: function(val){
+          return({
+            yAxis: { tickPixelInterval: val }
+          });
+        }
+      }
     }
 
 
+
   });
+
+
 })();
 
 

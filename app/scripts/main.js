@@ -14,6 +14,11 @@ require(["lib/canvg", "lib/rgbcolor", "lib/svg-download"], function(){
 })
 
 
+require(["lib/Charty/BackCharty.Component", "lib/Charty/BackCharty.Chart"], function(){
+
+})
+
+
 require(["appController"], function(){
   window.onhashchange = appController.routeFoo;
   appController.routeFoo();

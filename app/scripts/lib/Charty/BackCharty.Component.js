@@ -2,8 +2,7 @@
   window.BackCharty = window.BackCharty || {};
 
 
-  var Component = BackCharty.Component = Backbone.Model.extend({
-
+  BackCharty.Component = Backbone.Model.extend({
     registeredChartyAttributes: { },
 
     registeredAndSetAttributes: function(){
@@ -31,8 +30,6 @@
       }, {});
     },
 
-
-
     getFormattedValue: function(key){
       var valfoo = this.registeredChartyAttributes[key].value;
       if(valfoo){
@@ -53,7 +50,48 @@
         return foo( val );
       }
     }
+  });
+
+
+  BackCharty.Data = BackCharty.Component.extend({
+
+    initialize: function(){
+      this.parser = new Charty.DataParser();
+    },
+
+    // overwrite this
+    serializeFormattedAttributes: function(){
+
+    },
+
+    mapOpts: function(hMap, hdrs){
+      var self = this;
+      var z = _.object(_.zip(hMap, hdrs));
+      _.inject(z, function(v, k){
+        self[k](v);
+      })
+      return z;
+    },
+
+    parse: function(opts){
+      var arrs = this.parser.parseRawCSV(this.rawData());
+      // watch out, this modifies arrs, and this._Key() attributes
+      var headersMap = arrs[0];
+      var headers = arrs[1];
+
+
+      var dataset = this.parser.arraysToFlatDataSet(arrs, headers);
+      // TK this should probably not be passed in, there's no need
+      // to overrie it outside of what's done in parseRawCSV
+      opts = this.mapOpts(headersMap, headers);
+
+      return this.parser.toHighChartsFormat(dataset.slice(2), opts);
+    }
+
+
+
 
 
   });
+
 })();

@@ -2,7 +2,6 @@
   window.Charty = window.Charty || {};
 
   window.Charty.Axis = Charty.Component.extend({
-
     defaults: {
       minValue: 0,
       tickPixelInterval: 100
@@ -11,6 +10,16 @@
     registeredChartyAttributes: {
       title: {
         object: function(val){ return({ title: {enabled: true, text: val }}); }
+      },
+
+      categories: {
+        object: function(val){
+          if(val === true){
+            return { categories: true };
+          }else{
+            return({});
+          }
+        }
       },
 
       minValue: {
@@ -32,13 +41,17 @@
           });
         }
       },
-
-
-
     }
+  });
 
 
-  })
+  window.Charty.CategoricalAxis = Charty.Axis.extend({
+    defaults: {
+      minValue: 0,
+      tickPixelInterval: 100,
+      categories: true
+    }
+  });
 
 
 

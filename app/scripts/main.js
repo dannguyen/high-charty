@@ -21,8 +21,8 @@ require(["lib/Charty/Charty.Component",
   "lib/Charty/Charty.Data", "lib/Charty/Charty.Axis",  "appController"], function(){
   console.log('app loaded')
 
-  window.onhashchange = appController.routeFoo;
-  appController.routeFoo();
+  window.onhashchange = window.appController.routeFoo;
+  window.appController.routeFoo();
 })
 
 

@@ -46,7 +46,6 @@
         required: true,
         value: function(val, self){
           var d = self.dataObject();
-
           return d.serializeFormattedAttributes();
         },
 
@@ -59,19 +58,18 @@
       xAxis: {
         required: true,
         value: function(val, self){
-          var c = new window.Charty.Axis({
-            title: self.get('xAxisTitle') }
-          );
+          var dobj = self.dataObject();
+          if(dobj.hasCategories()){
+            var charttype = Charty.CategoricalAxis;
+          }else{
+            var charttype = Charty.Axis;
+          }
+          var c = new charttype({title: self.get('xAxisTitle') });
+
           return c.serializeFormattedAttributes();
         },
         object: function(val, self){
-          var dobj = self.dataObject();
           var axisObj = { xAxis: val };
-
-          if(dobj.hasCategories()){
-            axisObj.xAxis.categories = true;
-          }
-
           return axisObj;
         }
       },
@@ -79,7 +77,7 @@
       yAxis: {
         required: true,
         value: function(val, self){
-          var c = new window.Charty.Axis({
+          var c = new Charty.Axis({
             title: self.get('yAxisTitle') }
           );
           return c.serializeFormattedAttributes();

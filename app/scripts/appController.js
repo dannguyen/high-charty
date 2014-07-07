@@ -1,12 +1,13 @@
 (function(){
-  window.appController = {
-   contentEl: '#the-content',
+  window.appController = {};
 
-  clearPage: function(){
-    $(this.contentEl).html("");
-  },
+ appController.contentEl = '#the-content';
 
-   routeFoo: function(){
+  appController.clearPage = function(){
+      $(this.contentEl).html("");
+    };
+
+  appController.routeFoo =  function(){
     var hashPath = window.location.hash;
     if(hashPath.match(/^#charts/)){
       console.log('start chartUrl/');
@@ -30,11 +31,11 @@
       this.renderTemplateUntoPage('chartForm')
       this.chartForm();
     }
-  },
+  };
 
 
   // http://stackoverflow.com/a/13029597
-  require_template: function(templateName) {
+  appController.require_template = function(templateName) {
       var template = $('#template_' + templateName);
       if (template.length === 0) {
           var tmpl_dir = '/templates';
@@ -54,31 +55,24 @@
           $('head').append('<script id="template_' +
           templateName + '" type="text/template">' + tmpl_string + '<\/script>');
       }
-  },
+  };
 
-  renderTemplateUntoPage: function(templateName){
+  appController.renderTemplateUntoPage = function(templateName){
     this.require_template(templateName);
     var tfoo = _.template($('#template_' + templateName).html());
 
     $(this.contentEl).html(tfoo());
-  },
+  };
 
 
 
-  chartForm: function(){
+  appController.chartForm = function(){
     window.chart =  new Charty.Chart();
-    var lazyUpdate = _.debounce(function(){
-        $("#chart-config").each(function(){
-            var formId = $(this).attr("id");
-            if(formId === 'chart-config'){
-                var chartyObj = chart;
-            }
-            // deprecated
-            // }else if(formId === 'data-config'){
-            //     var chartyObj = chart.data();
-            // }
+    var chartyObj = chart;
 
-            $(this).find(".form-control").each(function(){
+    var lazyUpdate = _.debounce(function(){
+      console.log('lazyupdate happening')
+        $("#chart-config").find(".form-control").each(function(){
                 if( $(this).prop("tagName") === 'SELECT' ){
                     var val = $(this).find(":selected").attr('value');
                 }else{
@@ -87,19 +81,20 @@
                 var att = $(this).attr('name');
 
                 chartyObj.set(att, val);
-            });
         });
 
 
-        chart.draw("#chart-container");
 
        $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
        $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
+
+      chartyObj.draw("#chart-container");
        $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
+
     }, 800);
 
 
-    $('#chart-config .form-control, #data-config .form-control').change(
+    $('#chart-config .form-control').change(
         function(){ lazyUpdate(); }
     );
 
@@ -108,8 +103,6 @@
 
 
 
-
-  };
 
 
 })();

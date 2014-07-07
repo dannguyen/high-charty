@@ -58,7 +58,6 @@
         }else{
           memo[key] = val
         }
-
         return memo;
       }, {});
     },

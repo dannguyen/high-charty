@@ -15,9 +15,11 @@ require(["lib/canvg", "lib/rgbcolor", "lib/svg-download"], function(){
 })
 
 
-require(["lib/Charty/BackCharty.Component", "lib/Charty/BackCharty.Chart", "appController"], function(){
-  console.log('charty loaded')
-    console.log('app loaded')
+require(["lib/Charty/Charty.Component",
+  "lib/Charty/Charty.DataParser",
+  "lib/Charty/Charty.Chart",
+  "lib/Charty/Charty.Data", "lib/Charty/Charty.Axis",  "appController"], function(){
+  console.log('app loaded')
 
   window.onhashchange = appController.routeFoo;
   appController.routeFoo();

@@ -2,6 +2,10 @@
   window.appController = {
    contentEl: '#the-content',
 
+  clearPage: function(){
+    $(this.contentEl).html("");
+  },
+
    routeFoo: function(){
     var hashPath = window.location.hash;
     if(hashPath.match(/^#charts/)){
@@ -14,8 +18,7 @@
             var querystring = qm[1];
             console.log('query: ' + querystring)
             var queryOpts =  qs.parse(querystring);
-            window.chart = new BackCharty.Chart(queryOpts);
-            chart.set("rawData", "yKey\nditto\n10\n20\n50\n30");
+            window.chart = new Charty.Chart(queryOpts);
             chart.draw("#chart-container");
       }else{
         $('#chart-container').html("<p>You must enter a query string</p>")
@@ -61,12 +64,9 @@
   },
 
 
-  clearPage: function(){
-    $(this.contentEl).html("");
-  },
 
   chartForm: function(){
-    window.chart =  new BackCharty.Chart();
+    window.chart =  new Charty.Chart();
     var lazyUpdate = _.debounce(function(){
         $("#chart-config").each(function(){
             var formId = $(this).attr("id");
@@ -95,7 +95,7 @@
 
        $("#raw-chart-json").text(JSON.stringify(chart.serializeRawAttributes(), null, 4));
        $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
-
+       $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.serializeRawAttributes()) + "\">Chart URL</a>");
     }, 800);
 
 

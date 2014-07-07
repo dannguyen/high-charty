@@ -1,21 +1,21 @@
 (function () {
-  describe('BackCharty.Component', function(){
+  describe('Charty.Component', function(){
 
     it('is ok', function(){
-      _.isUndefined(BackCharty.Component).should.equal(false)
+      _.isUndefined(Charty.Component).should.equal(false)
     });
 
     describe('initialization by hash', function(){
       it("applies the attributes found in the hash", function(){
         var h = { someAtt: 'hello' };
-        var chart = new BackCharty.Component(h);
+        var chart = new Charty.Component(h);
         chart.get('someAtt').should.equal('hello');
       });
     });
 
 
     describe('registered attributes', function(){
-      var XComponent = BackCharty.Component.extend({
+      var XComponent = Charty.Component.extend({
         registeredChartyAttributes: {
           apples: {
             value: function(v){ return v + " bushels." },

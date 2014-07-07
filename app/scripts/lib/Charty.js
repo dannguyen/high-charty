@@ -1,6 +1,1 @@
-(function(root, $){
-  root.Charty = {};
-  Charty.$ = $;
-
-  return Charty;
-})(window, $)
+window.Charty = window.Charty || {};

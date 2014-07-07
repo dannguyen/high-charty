@@ -1,7 +1,7 @@
 (function(){
-  window.BackCharty = window.BackCharty || {};
+  window.Charty = window.Charty || {};
 
-  BackCharty.Component = Backbone.Model.extend({
+  window.Charty.Component = Backbone.Model.extend({
     registeredChartyAttributes: { },
 
     _registeredAndSetAttributes: function(){

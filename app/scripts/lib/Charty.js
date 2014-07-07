@@ -1,1 +1,6 @@
-window.Charty = window.Charty || {};
+define(['chartyChart'], function(chart){
+
+    return({
+      Chart: chart
+    });
+});

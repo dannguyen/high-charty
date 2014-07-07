@@ -1,12 +1,11 @@
+define(
+  ['underscore', 'backbone', 'jquery', 'chartyComponent', 'chartyDataParser'],
+  function(_, Backbone, $, Component, DataParser){
 
-(function(){
-   window.Charty = window.Charty || {};
 
-
-
-  window.Charty.Data = Charty.Component.extend({
+  var Data = Component.extend({
     initialize: function(){
-      this.parser = new Charty.DataParser();
+      this.parser = new DataParser();
 
       this.on('change:rawData', function(model, data){
         console.log('rawData changed');
@@ -40,7 +39,7 @@
 
       _.each(['xKey', 'yKey', 'zKey', 'categoryKey', 'seriesKey'], function(k){
         var v = z[k];
-        console.log("Setting " + k + " to: " + v);
+//        console.log("Setting " + k + " to: " + v);
         self.set(k,v);
       });
 
@@ -71,6 +70,7 @@
   });
 
 
+  return Data;
 
 
-})();
+});

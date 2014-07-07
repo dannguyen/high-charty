@@ -1,7 +1,12 @@
-(function(){
-  window.Charty = window.Charty || {};
+define(
+  ['underscore', 'backbone', 'jquery', 'chartyComponent'],
+  function(_, Backbone, $, Component){
 
-  window.Charty.Axis = Charty.Component.extend({
+
+  var Axis = { };
+
+
+  Axis.Standard = Component.extend({
     defaults: {
       minValue: 0,
       tickPixelInterval: 100
@@ -45,7 +50,7 @@
   });
 
 
-  window.Charty.CategoricalAxis = Charty.Axis.extend({
+  Axis.Categorical = Axis.Standard.extend({
     defaults: {
       minValue: 0,
       tickPixelInterval: 100,
@@ -54,5 +59,6 @@
   });
 
 
+  return Axis;
 
-})();
+});

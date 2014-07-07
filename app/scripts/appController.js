@@ -1,108 +1,126 @@
-(function(){
-  window.appController = {};
+// define(['jquery', 'underscore', 'backbone', 'chartyChart'], function($, _, Backbone, Chart){
 
- appController.contentEl = '#the-content';
+//   return({
+//     hello: 'world!',
+//     uscore: _,
+//     jq: $,
+//     bbq: Backbone
+//     // chart: Chart
+//   });
+// });
 
-  appController.clearPage = function(){
-      $(this.contentEl).html("");
-    };
+define(['jquery', 'underscore', 'chartyChart', 'page_router_query', 'svgDownload'],
+  function($, _, Chart, qs){
 
-  appController.routeFoo =  function(){
-    var hashPath = window.location.hash;
-    if(hashPath.match(/^#charts/)){
-      console.log('start chartUrl/');
-      this.clearPage();
-      this.renderTemplateUntoPage('chartUrl');
-      var qm = hashPath.match(/charts\?(.+)/)
+    var contentEl = '#the-content',
+        clearPage = function(){
+          $(contentEl).html("");
+        },
+        chart = null,
 
-      if(qm){
-            var querystring = qm[1];
-            console.log('query: ' + querystring)
-            var queryOpts =  qs.parse(querystring);
-            window.chart = new Charty.Chart(queryOpts);
-            chart.draw("#chart-container");
-      }else{
-        $('#chart-container').html("<p>You must enter a query string</p>")
-      }
+        routeFoo = function(){
+          var hashPath = window.location.hash;
+          if(hashPath.match(/^#charts/)){
+            console.log('start chartUrl/');
+            clearPage();
+            renderTemplateUntoPage('chartUrl');
+            var qm = hashPath.match(/charts\?(.+)/)
+            if(qm){
+              var querystring = qm[1];
+              console.log('query: ' + querystring)
+              var queryOpts =  qs.parse(querystring);
+              chart = new Chart(queryOpts);
+              chart.draw("#chart-container");
+            }else{
+              $('#chart-container').html("<p>You must enter a query string</p>")
+            }
 
-    }else{
-      console.log('chart Form')
-      this.clearPage();
-      this.renderTemplateUntoPage('chartForm')
-      this.chartForm();
-    }
-  };
+          }else{
+            console.log('chart Form')
+            clearPage();
+            renderTemplateUntoPage('chartForm')
+            chartForm();
+          }
+        },
 
+        require_template = function(templateName) {
+          var template = $('#template_' + templateName);
+          if (template.length === 0) {
+            var tmpl_dir = '/templates';
+            var tmpl_url = tmpl_dir + '/' + templateName + '.html';
+            var tmpl_string = '';
 
-  // http://stackoverflow.com/a/13029597
-  appController.require_template = function(templateName) {
-      var template = $('#template_' + templateName);
-      if (template.length === 0) {
-          var tmpl_dir = '/templates';
-          var tmpl_url = tmpl_dir + '/' + templateName + '.html';
-          var tmpl_string = '';
-
-          $.ajax({
-              url: tmpl_url,
-              method: 'GET',
-              async: false,
-              contentType: 'text',
-              success: function (data) {
-                  tmpl_string = data;
-              }
-          });
-
-          $('head').append('<script id="template_' +
-          templateName + '" type="text/template">' + tmpl_string + '<\/script>');
-      }
-  };
-
-  appController.renderTemplateUntoPage = function(templateName){
-    this.require_template(templateName);
-    var tfoo = _.template($('#template_' + templateName).html());
-
-    $(this.contentEl).html(tfoo());
-  };
-
-
-
-  appController.chartForm = function(){
-    window.chart =  new Charty.Chart();
-    var chartyObj = chart;
-
-    var lazyUpdate = _.debounce(function(){
-      console.log('lazyupdate happening')
-        $("#chart-config").find(".form-control").each(function(){
-                if( $(this).prop("tagName") === 'SELECT' ){
-                    var val = $(this).find(":selected").attr('value');
-                }else{
-                    var val = $(this).val();
+            $.ajax({
+                url: tmpl_url,
+                method: 'GET',
+                async: false,
+                contentType: 'text',
+                success: function (data) {
+                    tmpl_string = data;
                 }
-                var att = $(this).attr('name');
+            });
 
-                chartyObj.set(att, val);
-        });
+            $('head').append('<script id="template_' +
+            templateName + '" type="text/template">' + tmpl_string + '<\/script>');
+          }
+        },
+
+        renderTemplateUntoPage = function(templateName){
+          require_template(templateName);
+          var tfoo = _.template($('#template_' + templateName).html());
+
+          $(contentEl).html(tfoo());
+        },
 
 
 
-       $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
-       $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
+        chartForm = function(){
+          chart =  new Chart();
+          var lazyUpdate = _.debounce(function(){
+            console.log('lazyupdate happening')
+            $("#chart-config").find(".form-control").each(function(){
+                    if( $(this).prop("tagName") === 'SELECT' ){
+                        var val = $(this).find(":selected").attr('value');
+                    }else{
+                        var val = $(this).val();
+                    }
+                    var att = $(this).attr('name');
 
-      chartyObj.draw("#chart-container");
-       $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
-
-    }, 800);
+                    chart.set(att, val);
+             });
 
 
-    $('#chart-config .form-control').change(
-        function(){ lazyUpdate(); }
-    );
 
-    lazyUpdate();
+             $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
+             $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
+
+             chart.draw("#chart-container");
+             $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
+
+          }, 800);
+
+
+        $('#chart-config .form-control').change(
+            function(){ lazyUpdate(); }
+        );
+
+        lazyUpdate();
+      };
+
+
+
+
+      return(
+        {
+          routeFoo: routeFoo,
+          chart: chart
+        }
+      );
+
+
   }
+);
 
 
 
 
-
-})();

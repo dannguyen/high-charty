@@ -1,7 +1,8 @@
-(function(){
+define(
+  ['underscore', 'backbone', 'jquery', 'jquery_parse'],
+  function(_, Backbone, $){
 
-  var Charty = window.Charty || {}
-  var DataParser = Charty.DataParser = function(){
+  var DataParser = function(){
 
   };
 
@@ -102,5 +103,6 @@
 
 
 
-  return DataParser;
-})();
+    return DataParser;
+  }
+);

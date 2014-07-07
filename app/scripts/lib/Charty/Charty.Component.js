@@ -1,7 +1,8 @@
-(function(){
-  window.Charty = window.Charty || {};
+define(
+  ['underscore', 'backbone', 'jquery'],
+  function(_, Backbone, $){
 
-  window.Charty.Component = Backbone.Model.extend({
+    var Component = Backbone.Model.extend({
     registeredChartyAttributes: { },
 
     _registeredAndSetAttributes: function(){
@@ -86,5 +87,9 @@
 
 
 
+   return Component;
 
-})();
+  }
+);
+
+

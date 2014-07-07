@@ -1,43 +1,43 @@
+define(
+  ['underscore', 'backbone', 'jquery', 'highcharts',
+    'chartyComponent', 'chartyData', 'chartyAxis'],
+  function(_, Backbone, $, highcharts, Component, Data, Axis){
 
+    var DEFAULT_HIGHCHART_OPTS = {
+      title: { text: null },
+      colors: ['#6699cc','#003366','#EAD333','#3CDABA','#B65A4A'],
+      credits: { enabled: false },
+      chart: { animation: false,
+        style: {
+          fontFamily: "'Helvetica Neue', 'Helvetica', Arial, sans-serif",
+          fontSize: '13px'
+        }
+      },
+      plotOptions: { series: {animation: false }},
+      tooltip: {
+        enabled: true,
+        formatter: function(){
+          var str = "<b>" +  this.series.name + ": </b>";
+          str += "<br>" + this.x;
+          str += ", " + this.y;
 
-
-(function(){
-   window.Charty = window.Charty || {};
-   window.Charty.DEFAULT_HIGHCHART_OPTS = {
-
-    title: { text: null },
-    colors: ['#6699cc','#003366','#EAD333','#3CDABA','#B65A4A'],
-    credits: { enabled: false },
-    chart: { animation: false,
-      style: {
-        fontFamily: "'Helvetica Neue', 'Helvetica', Arial, sans-serif",
-        fontSize: '13px'
+          return str;
+        }
       }
-    },
-    plotOptions: { series: {animation: false }},
-    tooltip: {
-      enabled: true,
-      formatter: function(){
-        var str = "<b>" +  this.series.name + ": </b>";
-        str += "<br>" + this.x;
-        str += ", " + this.y;
-
-        return str;
-      }
-    }
-  }
+    }; // default opts
 
 
-  window.Charty.Chart = Charty.Component.extend({
+
+  var Chart = Component.extend({
     draw: function(el){
       var exportedConfig = this.serializeFormattedAttributes();
 
-      $(el).highcharts($.extend(true, window.Charty.DEFAULT_HIGHCHART_OPTS, exportedConfig));
+      $(el).highcharts($.extend(true, DEFAULT_HIGHCHART_OPTS, exportedConfig));
     },
 
 
     dataObject: function(){
-      var d = new Charty.Data({ rawData: this.get('rawData') });
+      var d = new Data({ rawData: this.get('rawData') });
       return d;
     },
 
@@ -60,9 +60,9 @@
         value: function(val, self){
           var dobj = self.dataObject();
           if(dobj.hasCategories()){
-            var charttype = Charty.CategoricalAxis;
+            var charttype = Axis.Categorical;
           }else{
-            var charttype = Charty.Axis;
+            var charttype = Axis.Standard;
           }
           var c = new charttype({title: self.get('xAxisTitle') });
 
@@ -77,7 +77,7 @@
       yAxis: {
         required: true,
         value: function(val, self){
-          var c = new Charty.Axis({
+          var c = new Axis.Standard({
             title: self.get('yAxisTitle') }
           );
           return c.serializeFormattedAttributes();
@@ -120,8 +120,9 @@
 
 
 
+  return Chart;
 
-
-})();
+  }
+);
 
 

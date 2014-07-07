@@ -25,7 +25,7 @@
             object: function(v){ return {fruits: { oranges: v}}   }
           },
           childFruit: {
-            object: 'component'
+            component: this.constructor
           }
         }
       });

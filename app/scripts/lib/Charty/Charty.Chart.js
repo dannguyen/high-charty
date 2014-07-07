@@ -117,7 +117,9 @@
 
   Chart.prototype.configChartWithData = function(h){
     var c = this.configChart(h);
-    c["series"] =  this.data().parse();
+    //shim TK
+    var newdataobj = new BackCharty.Data({rawData: this.data().rawData()});
+    c["series"] =  newdataobj.parseData();
 
    // adjust Chart attributes based on data structure
    // TK-spaghetti there has to be a better place to do this

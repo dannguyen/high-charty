@@ -76,30 +76,28 @@
             </section>
 
 
-          </form>
-      </div> <!-- end of chart customization -->
 
-
-    <div class="col-sm-6">
 
       <section class="sec">
-          <form action="" class="form-inline" id="data-config">
           <h3>Data Configuration</h3>
           <h5>Raw data</h5>
       <textarea id='raw-data' name="rawData" class="form-control" id="" cols="80" rows="10">seriesKey,categoryKey,yKey,zKey
-  fruit,season,quantity,price
-  Apples,Fall,48,1.00
-  Apples,Winter,82,1.50
-  Oranges,Fall,34,2.25
-  Oranges,Winter,98,3.58
-  Pears,Fall,45,1.75
-  Pears,Winter,149,2.10</textarea>
-          </form>
+fruit,season,quantity,price
+Apples,Fall,48,1.00
+Apples,Winter,82,1.50
+Oranges,Fall,34,2.25
+Oranges,Winter,98,3.58
+Pears,Fall,45,1.75
+Pears,Winter,149,2.10</textarea>
        </section>  <!-- end of data stuff-->
 
 
 
-    </div>
+
+          </form>
+      </div> <!-- end of chart customization -->
+
+
 
     </div> <!-- row -->
 
@@ -122,9 +120,14 @@
     <div class="container">
       <h3>Chart output</h3>
 
-      <textarea name="chart-json" id="chart-json" cols="120" rows="30">
+      <textarea name="chart-json" id="raw-chart-json" cols="120" rows="30">
         The chart's configuration will show up here...
       </textarea>
+
+      <textarea name="chart-json" id="formatted-chart-json" cols="120" rows="30">
+        The chart's configuration will show up here...
+      </textarea>
+
 
     </div>
   </section>

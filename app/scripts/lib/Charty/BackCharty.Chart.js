@@ -31,14 +31,8 @@
   window.BackCharty.Chart = BackCharty.Component.extend({
     draw: function(el){
       var exportedConfig = this.serializeFormattedAttributes();
-      exportedConfig.series = this.serializeFormattedData();
 
-      $(el).highcharts($.extend(BackCharty.DEFAULT_HIGHCHART_OPTS, exportedConfig));
-    },
-
-
-    serializeFormattedData: function(){
-      return( [{data: [{ y: 20 }, {y: 8}, {y:31} ] }] );
+      $(el).highcharts($.extend(true, window.BackCharty.DEFAULT_HIGHCHART_OPTS, exportedConfig));
     },
 
 
@@ -59,8 +53,9 @@
       xAxis: {
         required: true,
         value: function(val, sbind){
-          var c = new window.BackCharty.XAxis({title: sbind.get('xAxisTitle') });
-
+          var c = new window.BackCharty.XAxis({
+            title: sbind.get('xAxisTitle') }
+          );
           return c.serializeFormattedAttributes();
         },
 

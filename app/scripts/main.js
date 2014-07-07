@@ -10,16 +10,15 @@ require(["vendor/jquery.parse", "vendor/page.router.query"], function(charts) {
 
 
 require(["lib/canvg", "lib/rgbcolor", "lib/svg-download"], function(){
+  console.log('canvg loaded')
 
 })
 
 
-require(["lib/Charty/BackCharty.Component", "lib/Charty/BackCharty.Chart"], function(){
+require(["lib/Charty/BackCharty.Component", "lib/Charty/BackCharty.Chart", "appController"], function(){
+  console.log('charty loaded')
+    console.log('app loaded')
 
-})
-
-
-require(["appController"], function(){
   window.onhashchange = appController.routeFoo;
   appController.routeFoo();
 })

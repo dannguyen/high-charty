@@ -5,7 +5,20 @@
     registeredChartyAttributes: { },
 
     _registeredAndSetAttributes: function(){
-      return _.intersection(_.keys(this.registeredChartyAttributes), _.keys(this.attributes));
+      var atts = this.registeredChartyAttributes;
+
+      var isect = _.intersection(_.keys(atts), _.keys(this.attributes));
+      // get required atts
+      var reqatts = _.inject(atts, function(memo, h, k){
+        if(h.required === true){
+          memo.push(k);
+        }
+
+        return memo;
+      }, []);
+
+
+      return _.union(reqatts, isect);
     },
 
     serializeFormattedAttributes: function(){
@@ -42,7 +55,8 @@
     getFormattedValue: function(key){
       var valfoo = this.registeredChartyAttributes[key].value;
       if(valfoo){
-        return valfoo( this.get(key) );
+        var val = this.get(key);
+        return valfoo(val, this);
       }else{
         return this.get(key);
       }
@@ -63,41 +77,6 @@
   });
 
 
-  BackCharty.xAxis = BackCharty.Component.extend();
 
-  BackCharty.Data = BackCharty.Component.extend({
-
-    initialize: function(){
-      this.parser = new Charty.DataParser();
-    },
-
-    // overridding this
-    serializeFormattedAttributes: function(){
-      return this.parseData();
-    },
-
-    mapOpts: function(hMap, hdrs){
-      var self = this;
-      var z = _.object(_.zip(hMap, hdrs));
-      _.each(z, function(v, k){
-        self.set(k,v);
-      });
-
-      return z;
-    },
-
-    parseData: function(){
-      var arrs = this.parser.parseRawCSV(this.get('rawData'));
-      // watch out, this modifies arrs, and this._Key() attributes
-      var headersMap = arrs[0];
-      var headers = arrs[1];
-
-
-      var dataset = this.parser.arraysToFlatDataSet(arrs, headers);
-      var opts = this.mapOpts(headersMap, headers);
-
-      return this.parser.toHighChartsFormat(dataset.slice(2), opts);
-    }
-  });
 
 })();

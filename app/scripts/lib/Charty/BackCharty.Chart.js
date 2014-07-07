@@ -41,20 +41,34 @@
       return( [{data: [{ y: 20 }, {y: 8}, {y:31} ] }] );
     },
 
-    registeredComponents: {
+
+    registeredChartyAttributes: {
       data: {
-        component: BackCharty.Data,
-        attributes: ['rawText']
+        required: true,
+        value: function(val, self){
+          var d = new BackCharty.Data({rawData: self.get('rawData')});
+          return d.parseData();
+        },
+
+        object: function(val){
+          return( {series: val });
+        },
+
       },
 
       xAxis: {
-        component: BackCharty.xAxis,
-        attributes: ['title']
-      }
-    },
+        required: true,
+        value: function(val, sbind){
+          var c = new window.BackCharty.XAxis({title: sbind.get('xAxisTitle') });
 
+          return c.serializeFormattedAttributes();
+        },
 
-    registeredChartyAttributes: {
+        object: function(val){
+          return( { xAxis: val });
+        }
+      },
+
       colors: {
         object: function(val){ return({ colors: val })},
         value: function(val){
@@ -81,9 +95,6 @@
         }
       },
 
-      xAxisTitle: {
-        object: function(val){ return({ xAxis: { title: {enabled: true, text: val }}}) }
-      },
 
       yAxisTitle: {
         object: function(val){ return({ yAxis: { title: {enabled: true, text: val }}}) }
@@ -105,10 +116,58 @@
         }
       }
     }
-
-
-
   });
+
+
+
+
+  window.BackCharty.XAxis = BackCharty.Component.extend({
+    registeredChartyAttributes: {
+      title:{
+        object: function(val){ return({ title: {enabled: true, text: val }}); }
+      }
+    }
+  });
+
+  window.BackCharty.Data = BackCharty.Component.extend({
+    initialize: function(){
+      this.parser = new Charty.DataParser();
+    },
+
+    defaults: {
+      rawData: ""
+    },
+
+    // overridding this
+    serializeFormattedAttributes: function(){
+      return this.parseData();
+    },
+
+    mapOpts: function(hMap, hdrs){
+      var self = this;
+      var z = _.object(_.zip(hMap, hdrs));
+      // _.each(z, function(v, k){
+      //   self.set(k,v);
+      // });
+
+      return z;
+    },
+
+    parseData: function(){
+      var arrs = this.parser.parseRawCSV(this.get('rawData'));
+      if(_.isEmpty(arrs)){ return []; }
+
+      var headersMap = arrs[0];
+      var headers = arrs[1];
+
+      var nonheader_data = arrs.slice(2);
+      var dataset = this.parser.arraysToFlatDataSet(nonheader_data, headers);
+      var opts = this.mapOpts(headersMap, headers);
+
+      return this.parser.toHighChartsFormat(dataset, opts);
+    }
+  });
+
 
 
 })();

@@ -36,33 +36,60 @@
     },
 
 
+    dataObject: function(){
+      var d = new Charty.Data({ rawData: this.get('rawData') });
+      return d;
+    },
+
     registeredChartyAttributes: {
       data: {
         required: true,
         value: function(val, self){
-          var d = new Charty.Data({rawData: self.get('rawData')});
-          return d.parseData();
+          var d = self.dataObject();
+
+          return d.serializeFormattedAttributes();
         },
 
-        object: function(val){
-          return( {series: val });
+        object: function(parsedData){
+          return({ series: parsedData });
         },
 
       },
 
       xAxis: {
         required: true,
-        value: function(val, sbind){
-          var c = new window.Charty.XAxis({
-            title: sbind.get('xAxisTitle') }
+        value: function(val, self){
+          var c = new window.Charty.Axis({
+            title: self.get('xAxisTitle') }
           );
           return c.serializeFormattedAttributes();
         },
+        object: function(val, self){
+          var dobj = self.dataObject();
+          var axisObj = { xAxis: val };
 
-        object: function(val){
-          return( { xAxis: val });
+          if(dobj.hasCategories()){
+            axisObj.xAxis.categories = true;
+          }
+
+          return axisObj;
         }
       },
+
+      yAxis: {
+        required: true,
+        value: function(val, self){
+          var c = new window.Charty.Axis({
+            title: self.get('yAxisTitle') }
+          );
+          return c.serializeFormattedAttributes();
+        },
+        object: function(val){
+          return( { yAxis: val });
+        }
+      },
+
+
 
       colors: {
         object: function(val){ return({ colors: val })},
@@ -87,27 +114,6 @@
         value: function(val){
           if(val === 'stacked'){ return 'normal'; }
           else{ return null; }
-        }
-      },
-
-
-      yAxisTitle: {
-        object: function(val){ return({ yAxis: { title: {enabled: true, text: val }}}) }
-      },
-
-      yAxisMin: {
-        object: function(val){ return({yAxis: {min: val }})},
-        value: function(val){
-          if(val === 'auto'){ return null; }
-          else{ return val; }
-        }
-      },
-
-      yAxisTickPixelInterval: {
-        object: function(val){
-          return({
-            yAxis: { tickPixelInterval: val }
-          });
         }
       }
     }

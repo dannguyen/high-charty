@@ -93,9 +93,9 @@
 
         chart.draw("#chart-container");
 
-       $("#raw-chart-json").text(JSON.stringify(chart.serializeRawAttributes(), null, 4));
+       $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
        $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
-       $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.serializeRawAttributes()) + "\">Chart URL</a>");
+       $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
     }, 800);
 
 

@@ -23,9 +23,8 @@
 
     serializeFormattedAttributes: function(){
       var self = this;
-      var regAtts = self._registeredAndSetAttributes();
-      return _.reduce(regAtts, function(memo, k){
-        var obj = self.getFormattedObject(k);
+      return _.reduce(self.formattedAttributes(), function(memo, val, key){
+        var obj = self.getFormattedObject(key, val);
         // if obj is not a Hash, ie it is an Array or other kind of datatype
         //   then wrap it in a Hash
         if( !_.isArray(obj) && _.isEmpty(_.keys(obj)) ){
@@ -39,11 +38,23 @@
       }, {});
     },
 
-    serializeRawAttributes: function(){
+
+    formattedAttributes: function(){
+      var self = this;
+      var regAttKeys = self._registeredAndSetAttributes();
+
+      return _.reduce(regAttKeys, function(memo, key){
+        memo[key] = self.getFormattedValue(key)
+        return memo;
+      }, {});
+    },
+
+
+    rawAttributes: function(){
       var self = this;
       return _.inject( self.attributes, function(memo, val, key){
-        if(val.serializeRawAttributes){
-          memo[key] = val.serializeRawAttributes();
+        if(val.rawAttributes){
+          memo[key] = val.rawAttributes();
         }else{
           memo[key] = val
         }
@@ -53,25 +64,23 @@
     },
 
     getFormattedValue: function(key){
-      var valfoo = this.registeredChartyAttributes[key].value;
-      if(valfoo){
+      var foo = this.registeredChartyAttributes[key].value;
+      if(foo){
         var val = this.get(key);
-        return valfoo(val, this);
+        return foo(val, this);
       }else{
         return this.get(key);
       }
     },
 
-    getFormattedObject: function(key){
-
-      var val = this.getFormattedValue(key);
-      if(!_.isUndefined( this.registeredChartyAttributes[key].component )){
-        var nested_o = {}
-        nested_o[key] = val.serializeFormattedAttributes();
-        return nested_o;
+    getFormattedObject: function(key, val){
+      var foo = this.registeredChartyAttributes[key].object;
+      if(_.isUndefined(foo)){
+        var nestedObj = {};
+        nestedObj[key] = val;
+        return nestedObj;
       }else{
-        var foo = this.registeredChartyAttributes[key].object;
-        return foo( val );
+        return foo( val, this );
       }
     }
   });

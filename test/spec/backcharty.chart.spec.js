@@ -26,7 +26,7 @@
       });
 
       it("serializesRaw", function(){
-        var atts = chart.serializeRawAttributes();
+        var atts = chart.rawAttributes();
         atts.xAxisTitle.should.equal('hello chart');
         _.isUndefined(atts.xAxis).should.equal(true);
       });

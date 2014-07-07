@@ -15,6 +15,8 @@ module.exports = function (grunt) {
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
+
     // Configurable paths
     var config = {
         app: 'app',
@@ -200,6 +202,21 @@ module.exports = function (grunt) {
                 src: ['<%= config.app %>/styles/{,*/}*.{scss,sass}']
             }
         },
+
+        // requirejs: {
+        //   compile: {
+        //     options: {
+        //       baseUrl: "<%= config.app %>/scripts",
+        //       include: ['main'],
+        //       insertRequire: ['main'],
+        //       name: "../../bower_components/almond/almond", // assumes a production build using almond
+        //       out: "<%= config.dist %>/scripts/optimized.js",
+        //       wrap: true
+        //     }
+        //   }
+        // },
+
+
 
         // Renames files for browser caching purposes
         rev: {
@@ -398,6 +415,7 @@ module.exports = function (grunt) {
         'concat',
         'cssmin',
         'uglify',
+        'requirejs',
         'copy:dist',
         'rev',
         'usemin',

@@ -1,58 +1,7 @@
 (function(){
   window.BackCharty = window.BackCharty || {};
 
-
   BackCharty.Component = Backbone.Model.extend({
-
-    constructor: function(){
-      this.registeredDelegatedAttributes = {};
-      this._registerComponents();
-      Backbone.Model.apply(this, arguments);
-    },
-    initialize: function(){
-
-    },
-
-    constructDelegatedAtt: function(compname, attname){
-      return compname + attname.charAt(0).toUpperCase() + attname.substring(1);
-    },
-    registeredComponents: {},
-    getRegisteredDelegatedComponent: function(att){
-      return this.registeredDelegatedAttributes[att];
-    },
-
-    _registerComponents: function(){
-      var self = this;
-      _.each(self.registeredComponents, function(compHash, compKey){
-        var component = new compHash.component();
-
-        _.each(compHash.attributes, function(att){
-          camelAtt = self.constructDelegatedAtt(compKey, att);
-          console.log("Registering " + compKey + ": " + camelAtt);
-          self.registeredDelegatedAttributes[camelAtt] = {component: component, delegatedAttribute: att};
-        });
-      });
-    },
-
-    get: function(att) {
-      var c = this.getRegisteredDelegatedComponent(att);
-      if(c){
-        c.component.get(c.delegatedAttribute);
-      }else{
-        Backbone.Model.prototype.get.apply(this, arguments);
-      }
-    },
-
-    set: function(key, val, options) {
-      var c = this.getRegisteredDelegatedComponent(key);
-      if(c){
-        c.component.set(c.delegatedAttribute, val);
-      }else{
-        Backbone.Model.prototype.set.apply(this, arguments);
-      }
-    },
-
-
     registeredChartyAttributes: { },
 
     _registeredAndSetAttributes: function(){
@@ -102,7 +51,7 @@
     getFormattedObject: function(key){
 
       var val = this.getFormattedValue(key);
-      if(!_.isUndefined( this.registeredChartyAttributes[key].component ){
+      if(!_.isUndefined( this.registeredChartyAttributes[key].component )){
         var nested_o = {}
         nested_o[key] = val.serializeFormattedAttributes();
         return nested_o;
@@ -149,11 +98,6 @@
 
       return this.parser.toHighChartsFormat(dataset.slice(2), opts);
     }
-
-
-
-
-
   });
 
 })();

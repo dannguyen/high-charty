@@ -31,6 +31,7 @@ requirejs.config({
     page_router_query: "vendor/page.router.query",
     rgbcolor: 'lib/rgbcolor',
     canvg: 'lib/canvg',
+    really_simple_colorpicker: '../bower_components/really-simple-colorpicker/jquery.colorPicker.min',
     chartyComponent: 'lib/Charty/Charty.Component',
     chartyData: 'lib/Charty/Charty.Data',
     chartyDataParser: 'lib/Charty/Charty.DataParser',

@@ -9,7 +9,7 @@
 //   });
 // });
 
-define(['jquery', 'underscore', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'svgDownload'],
+define(['jquery', 'underscore', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'really_simple_colorpicker', 'svgDownload'],
   function($, _, Chart, qs){
 
     var contentEl = '#the-content',

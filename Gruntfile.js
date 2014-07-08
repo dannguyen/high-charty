@@ -203,18 +203,7 @@ module.exports = function (grunt) {
             }
         },
 
-        // requirejs: {
-        //   compile: {
-        //     options: {
-        //       baseUrl: "<%= config.app %>/scripts",
-        //       include: ['main'],
-        //       insertRequire: ['main'],
-        //       name: "../../bower_components/almond/almond", // assumes a production build using almond
-        //       out: "<%= config.dist %>/scripts/optimized.js",
-        //       wrap: true
-        //     }
-        //   }
-        // },
+
 
 
 
@@ -322,6 +311,19 @@ module.exports = function (grunt) {
         //     dist: {}
         // },
 
+       requirejs: {
+
+                compile:{
+
+                  options: {
+                      baseUrl: "app/scripts",
+                      out: "dist/scripts/optimized.js",
+                      name: "vendor/almond"
+                    }
+                }
+        },
+
+
         // Copies remaining files to places other tasks can use
         copy: {
             dist: {
@@ -409,15 +411,17 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+                'requirejs',
+
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
         'concat',
         'cssmin',
         'uglify',
-        'requirejs',
         'copy:dist',
         'rev',
+
         'usemin',
         'htmlmin'
     ]);

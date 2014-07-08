@@ -2,7 +2,7 @@
   "name": "yo-webapp",
   "private": true,
   "dependencies": {
-    "backbone": "~1.0",
+    "backbone": "~1.1.2",
     "bootstrap-sass-official": "~3.1.0",
     "jquery": "~1.11.0",
     "requirejs": "~2.1.0",

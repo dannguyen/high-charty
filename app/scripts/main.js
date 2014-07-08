@@ -41,42 +41,16 @@ requirejs.config({
 requirejs( ['appController'], function(appController){
   window.app = appController;
   console.log('logging app controller');
-  window.onhashchange = function(){
-    if(window.location.hash !== '#'){ //ignore anchor triggers
-      appController.routeFoo();
-    }else{
-      console.log('hash change ignored');
-    }
-  }
+  // window.onhashchange = function(){
+  //   if(window.location.hash !== '#'){ //ignore anchor triggers
+  //     appController.routeFoo();
+  //   }else{
+  //     console.log('hash change ignored');
+  //   }
+  // }
   appController.routeFoo();
 
 });
-
-
-// requirejs([
-
-//     ,
-//     ,
-//     "lib/Charty/Charty.Component",
-//     "lib/Charty/Charty.DataParser",
-//     "lib/Charty/Charty.Chart",
-//     "lib/Charty/Charty.Data", "lib/Charty/Charty.Axis",
-//     "appController"
-
-//   ], function(_, Backbone, Highcharts){
-
-//     window.onhashchange = appController.routeFoo;
-//     appController.routeFoo();
-
-// });
-
-
-   // 'bower_components/really-simple-colorpicker/jquery.colorPicker',
-//     "lib/canvg", "lib/rgbcolor", "lib/svg-download",
-
-
-
-
 
 
 

@@ -1,0 +1,116 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>HighCharty (YO)</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css styles/vendor.css -->
+        <!-- bower:css -->
+
+        <!-- endbower -->
+        <!-- endbuild -->
+        <!-- build:css(.tmp) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+    </head>
+    <body>
+
+<div id="the-content">
+
+
+    <h2>hello</h2>
+
+    <div id="the-form">
+
+    </div>
+
+</div> <!-- #the-content -->
+
+<script src="scripts/vendor/jquery.js"></script>
+
+
+<script src='../bower_components/underscore/underscore.js'></script>
+<script src='../bower_components/backbone/backbone.js'></script>
+
+<script src="scripts/lib/chartyConfigurer.js"></script>
+
+
+<script id="charty-component" type="text/template">
+
+    <h3><%= componentName %></h3>
+
+    <% _.each(formAttributes, function(att, key){  %>
+        <div><h5><%=key%></h5>
+        <%= template_configAttr( att  ) %>
+
+        </div>
+    <% }) %>
+
+</script>
+
+<script id="charty-config-attribute" type="text/template">
+    (<label for="<%=fullname %>"><%=fullname%></label>)
+
+        <% switch( optType ){ case 'text': %>
+                <textarea class="chart-attr" name="<%=fullname %>" cols="60" rows="20">
+                <%= value %>
+                </textarea>
+            <% break; case 'checkbox': %>
+                <input class="chart-attr" type="checkbox" name="<%=fullname %>" value="<%= value %>">
+            <% break; case 'select': %>
+                <select class="chart-attr" name="<%=fullname %>">
+                <% _.each(values, function(val){  %>
+                    <% var selected = val === value ? 'selected' : '' %>
+                    <option <%=selected%>><%=val%></option>
+                <% });  %>
+                </select>
+            <% break; case 'input': %>
+                <input class="chart-attr" name="<%=fullname %>" value="<%= value %>">
+                <% break; %>
+        <% } %>
+
+</script>
+
+<script>
+
+    $(document).ready(function(){
+        // need a place to put the templates
+        window.template_configAttr = _.template($("#charty-config-attribute").html());
+
+        // read the configuration
+        // set up the charts
+        $.getJSON('scripts/chart-config.json', function(data){
+            if(!_.isEmpty(data)){
+
+                console.log("hey");
+                var the_el = "#the-form";
+                $(the_el).html('');
+                // Foofoo.construct(data, el);
+                ChartyConfigurer.setConfig(data);
+                window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 20});
+                window.chartView = new SomeComponentConfigView({model: chart });
+
+
+                var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis', {dimension: 'x'} );
+                var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis', {dimension: 'y'} );
+                var xaxisView = new SomeComponentConfigView({model: xaxis });
+                var yaxisView = new SomeComponentConfigView({model: yaxis });
+                $(the_el).append(chartView.render().el)
+                    .append(xaxisView.render().el)
+                    .append(yaxisView.render().el)
+
+            }
+        });
+    })
+
+
+
+
+
+</script>
+
+</body>
+</html>

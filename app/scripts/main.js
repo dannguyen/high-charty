@@ -29,6 +29,8 @@ requirejs.config({
     underscore: '../bower_components/underscore/underscore',
     jquery_parse: "vendor/jquery.parse",
     page_router_query: "vendor/page.router.query",
+    rgbcolor: 'lib/rgbcolor',
+    canvg: 'lib/canvg',
     chartyComponent: 'lib/Charty/Charty.Component',
     chartyData: 'lib/Charty/Charty.Data',
     chartyDataParser: 'lib/Charty/Charty.DataParser',

@@ -23,56 +23,33 @@
 
     <h2>hello</h2>
 
-    <div id="the-form">
+    <section class="container">
+        <div class="row">
+            <div class="col-sm-6">
 
-    </div>
+                <h5>Attributes here</h5>
+                <div id="the-form">
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h5>Packaged JSON here</h5>
+                <pre><code id="the-data"></code></pre>
+            </div>
+
+        </div>
+    </section>
+
+
 
 </div> <!-- #the-content -->
 
 <script src="scripts/vendor/jquery.js"></script>
-
-
 <script src='../bower_components/underscore/underscore.js'></script>
 <script src='../bower_components/backbone/backbone.js'></script>
-
 <script src="scripts/lib/chartyConfigurer.js"></script>
 
 
-<script id="charty-component" type="text/template">
-
-    <h3><%= componentName %></h3>
-
-    <% _.each(formAttributes, function(att, key){  %>
-        <div><h5><%=key%></h5>
-        <%= template_configAttr( att  ) %>
-
-        </div>
-    <% }) %>
-
-</script>
-
-<script id="charty-config-attribute" type="text/template">
-    (<label for="<%=fullname %>"><%=fullname%></label>)
-
-        <% switch( optType ){ case 'text': %>
-                <textarea class="chart-attr" name="<%=fullname %>" cols="60" rows="20">
-                <%= value %>
-                </textarea>
-            <% break; case 'checkbox': %>
-                <input class="chart-attr" type="checkbox" name="<%=fullname %>" value="<%= value %>">
-            <% break; case 'select': %>
-                <select class="chart-attr" name="<%=fullname %>">
-                <% _.each(values, function(val){  %>
-                    <% var selected = val === value ? 'selected' : '' %>
-                    <option <%=selected%>><%=val%></option>
-                <% });  %>
-                </select>
-            <% break; case 'input': %>
-                <input class="chart-attr" name="<%=fullname %>" value="<%= value %>">
-                <% break; %>
-        <% } %>
-
-</script>
 
 <script>
 
@@ -102,6 +79,12 @@
                     .append(xaxisView.render().el)
                     .append(yaxisView.render().el)
 
+
+                var data_el = "#the-data";
+                $(data_el).html(ChartyConfigurer.packager.wrapComponentsInJson(
+                    [chart, xaxis, yaxis]
+                ));
+
             }
         });
     })
@@ -111,6 +94,54 @@
 
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="charty-component" type="text/template">
+
+    <h3><%= componentName %></h3>
+
+    <% _.each(formAttributes, function(att, key){  %>
+        <div><h5><%=key%></h5>
+        <%= template_configAttr( att  ) %>
+
+        </div>
+    <% }) %>
+
+</script>
+<script id="charty-config-attribute" type="text/template">
+    (<label for="<%=fullname %>"><%=fullname%></label>)
+
+        <% switch( optType ){ case 'text': %>
+                <textarea class="chart-attr" name="<%=fullname %>" cols="60" rows="20">
+                <%= value %>
+                </textarea>
+            <% break; case 'checkbox': %>
+                <input class="chart-attr" type="checkbox" name="<%=fullname %>" value="<%= value %>">
+            <% break; case 'select': %>
+                <select class="chart-attr" name="<%=fullname %>">
+                <% _.each(values, function(val){  %>
+                    <% var selected = val === value ? 'selected' : '' %>
+                    <option <%=selected%>><%=val%></option>
+                <% });  %>
+                </select>
+            <% break; case 'input': %>
+                <input class="chart-attr" name="<%=fullname %>" value="<%= value %>">
+                <% break; %>
+        <% } %>
+
+</script>
+
 
 </body>
 </html>

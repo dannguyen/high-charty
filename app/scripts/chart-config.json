@@ -3,7 +3,8 @@
     "attributes": [
       {
         "name": "width",
-        "type": "integer"
+        "type": "integer",
+        "defaultValue": "100%"
       },
       {
         "name": "height",
@@ -77,7 +78,7 @@
         "type": "integer"
       },
       {
-        "name": "categories",
+        "name": "categorical",
         "type": "boolean"
       }
     ]

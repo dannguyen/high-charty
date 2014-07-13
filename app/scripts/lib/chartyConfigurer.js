@@ -115,10 +115,11 @@ window.SomeComponentConfigView = Backbone.View.extend({
       componentName: this.model.componentName
     }
 
-    console.log("Component " + this.model.componentName + " rendering...")
+    console.log("Component " + this.model.componentType + ": " +
+                  this.model.componentName + " rendering...")
     console.log(opts)
-    this.$el.html(this.template(opts));
 
+    this.$el.html(this.template(opts));
     return this;
   }
 });
@@ -148,6 +149,7 @@ window.ChartyConfigurer.packager = (function(){
         return memo;
       }, {});
 
+      return wrappedAtts;
     },
 
     wrapAtt: function(val, wrapFoo){
@@ -161,12 +163,12 @@ window.ChartyConfigurer.packager = (function(){
     wrapComponentsInJson: function(components){
       var self = this;
       var obj = _.inject(components, function(memo, component){
-        console.log(component.componentType)
+        console.log(component.componentType + " - " + component.componentName)
         var wrapped = self.wrap(component.componentType, component.attributes);
         memo = $.extend(true, memo, wrapped);
-
+        console.log(wrapped);
         return memo
-      }, {z: 3});
+      }, {});
 
 
       return JSON.stringify(obj, null, 4);

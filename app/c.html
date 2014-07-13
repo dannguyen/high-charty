@@ -48,55 +48,7 @@
 <script src='../bower_components/underscore/underscore.js'></script>
 <script src='../bower_components/backbone/backbone.js'></script>
 <script src="scripts/lib/chartyConfigurer.js"></script>
-
-
-
-<script>
-
-    $(document).ready(function(){
-        // need a place to put the templates
-        window.template_configAttr = _.template($("#charty-config-attribute").html());
-
-        // read the configuration
-        // set up the charts
-        $.getJSON('scripts/chart-config.json', function(data){
-            if(!_.isEmpty(data)){
-
-                console.log("hey");
-                var the_el = "#the-form";
-                $(the_el).html('');
-                // Foofoo.construct(data, el);
-                ChartyConfigurer.setConfig(data);
-                window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 20});
-                window.chartView = new SomeComponentConfigView({model: chart });
-
-
-                var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis', {dimension: 'x'} );
-                var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis', {dimension: 'y'} );
-                var xaxisView = new SomeComponentConfigView({model: xaxis });
-                var yaxisView = new SomeComponentConfigView({model: yaxis });
-                $(the_el).append(chartView.render().el)
-                    .append(xaxisView.render().el)
-                    .append(yaxisView.render().el)
-
-
-                var data_el = "#the-data";
-                $(data_el).html(ChartyConfigurer.packager.wrapComponentsInJson(
-                    [chart, xaxis, yaxis]
-                ));
-
-            }
-        });
-    })
-
-
-
-
-
-</script>
-
-
-
+<script src="scripts/lib/chartyConfigurerReady.js"></script>
 
 
 

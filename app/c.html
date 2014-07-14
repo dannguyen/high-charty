@@ -33,8 +33,12 @@
                 </div>
             </div>
             <div class="col-sm-6">
+                <h5>Canonical JSON here</h5>
+                <pre><code id="the-atts"></code></pre>
+
+
                 <h5>Packaged JSON here</h5>
-                <pre><code id="the-data"></code></pre>
+                <pre><code id="the-json"></code></pre>
             </div>
 
         </div>
@@ -61,9 +65,8 @@
     <h3><%= componentName %></h3>
 
     <% _.each(formAttributes, function(att, key){  %>
-        <div><h5><%=key%></h5>
-        <%= template_configAttr( att  ) %>
-
+        <div>
+            <%= template_configAttr( att  ) %>
         </div>
     <% }) %>
 

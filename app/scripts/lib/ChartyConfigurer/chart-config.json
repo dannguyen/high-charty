@@ -63,14 +63,6 @@
   "axis": {
     "attributes": [
       {
-        "name": "dimension",
-        "values": [
-          "x",
-          "y",
-          "z"
-        ]
-      },
-      {
         "name": "title"
       },
       {

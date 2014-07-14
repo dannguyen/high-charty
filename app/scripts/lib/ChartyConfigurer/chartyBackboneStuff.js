@@ -35,8 +35,8 @@ define(
     },
 
     canonicalAttributes: function(){
-      var cname = this.get('componentName');
-      return _.inject(this.chartAttributes(), function(memo, val, key){
+      var cname = this.componentName;
+      return _.inject(this.attributes, function(memo, val, key){
         memo[cname + '_' + key] = val;
         return memo;
       }, {});

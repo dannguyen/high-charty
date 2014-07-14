@@ -57,6 +57,19 @@ define(
                atts.componentName,
                atts.formMetaAttributes
                );
+    },
+
+    exportComponents: function(componentsArr){
+      var obj = _.inject(componentsArr, function(memo, component){
+        return _.extend(memo, component.canonicalAttributes());
+      }, {});
+
+      return obj;
+    },
+
+    wrapComponentsInJson: function(componentsArr){
+      var obj = this.exportComponents(componentsArr)
+      return JSON.stringify(obj, null, 4);
     }
   };
 

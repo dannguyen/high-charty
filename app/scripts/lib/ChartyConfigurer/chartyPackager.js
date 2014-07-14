@@ -1,3 +1,8 @@
+// TO DO:
+// grab the flattenedAttributes from the structure
+// THEN process them one by one
+
+
 define(
   ['underscore', 'backbone', 'jquery'],
   function(_, Backbone, $){
@@ -5,93 +10,73 @@ define(
     var ChartyPackager = (function(){
       var o = {
 
-      // componentType is a String, e.g. "chart" "na"
-      // get a set of attributes, apply any configuration to them
-      // return a new Object
-        wrap: function(componentType, atts){
-          var attsConfig = this.config[componentType];
-          var self = this;
-          if(_.isUndefined(attsConfig)){ return atts; }
-
-          var wrappedAtts = _.inject(atts, function(memo, attVal, attName){
-            var o = self.wrapAtt(attVal, attsConfig[attName]);
-            if(!_.isUndefined(o) && o.root === true){
-              $.extend(true, memo, o['pkg']);
+        convert: function(atts){
+          var config = this.config;
+          var convertedAtts = _.inject(atts, function(memo, attVal, attName){
+            var mash = {};
+            var attFoo = config[attName];
+            console.log(attName)
+            if(_.isUndefined(attFoo)){
+              // return a conventional hash
+              var z = attName.split('_');
+              var _h = {};
+              _h[z[1]] = attVal;
+              mash[z[0]] = _h; // e.g. {chart: {something: someVal }}
             }else{
-              memo[attName] = o
+              console.log('attfoo')
+              console.log(attFoo);
+              mash = attFoo(attVal);
             }
 
-            return memo;
+            return $.extend(true, memo, mash);
           }, {});
 
-          return wrappedAtts;
+          return convertedAtts;
         },
 
-        wrapAtt: function(val, wrapFoo){
-          if(_.isUndefined(wrapFoo)){
-            return val;
-          }else{
-            return wrapFoo(val);
-          }
-        },
 
-        wrapComponentsInJson: function(components){
-          var self = this;
-          var obj = _.inject(components, function(memo, component){
-            console.log(component.componentType + " - " + component.componentName)
-            var wrapped = self.wrap(component.componentType, component.attributes);
-            memo = $.extend(true, memo, wrapped);
-            console.log(wrapped);
-            return memo
-          }, {});
-
+        wrapComponentsInJson: function(canonAttributes){
+          var obj = this.convert(canonAttributes)
 
           return JSON.stringify(obj, null, 4);
         }
 
       };
 
-      o.config = {};
-
-      o.config.axis = {
-        categorical: function(value){
+      o.config = {
+        xAxis_categorical: function(value){
           return { categories: true };
-        }
-      };
-
-      o.config.chart = {
-        stacking: function(value){
-          var v = (value === 'stacked') ? 'normal' : null;
-          return { root: true, pkg: { plotOptions: { series: { stacking: v } } }};
         },
 
-        width: function(value){
+        chart_stacking: function(value){
+          var v = (value === 'stacked') ? 'normal' : null;
+          return  { plotOptions: { series: { stacking: v } } };
+        },
+
+        chart_width: function(value){
           var v = (value === '100%') ? null : value;
           var obj = { width: v };
-          return { attributes: obj };
-        }
-      };
-
-
-      o.config.data = {
-        seriesColors: function(value){
-          var v = _.isArray(value) ? value : (value + '').split(',');
-          return v;
+          return obj;
         },
 
-        text: function(value){
+        data_seriesColors: function(value){
+          var v = _.isArray(value) ? value : (value + '').split(',');
+          return  {chart: { colors: v }};
+        },
+
+        data_text: function(value){
           var v =  [value + "ASDFOD Ddoo"];
-          console.log("VALUE " + v)
-          return { root: true, pkg: { series: v }  }
+          return  { series: v } ;
         }
+
+
       };
 
 
       return ({
-        wrap: o.wrap,
-        wrapAtt: o.wrapAtt,
-        wrapComponentsInJson: o.wrapComponentsInJson,
+        convert: o.convert,
         config: o.config,
+        wrapComponentsInJson: o.wrapComponentsInJson
       });
 
     })();
@@ -101,3 +86,36 @@ define(
   }
 );
 
+
+
+      // o.config.axis = {
+      //   categorical: function(value){
+      //     return { categories: true };
+      //   }
+      // };
+
+      // o.config.chart = {
+      //   stacking: function(value){
+      //     var v = (value === 'stacked') ? 'normal' : null;
+      //     return { root: true, pkg: { plotOptions: { series: { stacking: v } } }};
+      //   },
+
+      //   width: function(value){
+      //     var v = (value === '100%') ? null : value;
+      //     var obj = { width: v };
+      //     return obj;
+      //   }
+      // };
+
+
+      // o.config.data = {
+      //   seriesColors: function(value){
+      //     var v = _.isArray(value) ? value : (value + '').split(',');
+      //     return { root: true, pkg: {chart: { colors: v }}};
+      //   },
+
+      //   text: function(value){
+      //     var v =  [value + "ASDFOD Ddoo"];
+      //     return { root: true, pkg: { series: v }  }
+      //   }
+      // };

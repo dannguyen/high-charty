@@ -16,10 +16,12 @@ define(
         window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 200});
         window.chartView = new ChartyParts.SomeComponentConfigView({model: chart });
 
-        var databox = ChartyConfigurer.initComponent('data', 'data');
+        var databox = ChartyConfigurer.initComponent('data', 'data', {
+            seriesColors: "#6699cc,#003366,#EAD333,#3CDABA,#B65A4A"
+        });
 
-        var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis', {dimension: 'x'} );
-        var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis', {dimension: 'y'} );
+        var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis' );
+        var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis');
         var xaxisView = new ChartyParts.SomeComponentConfigView({model: xaxis });
         var yaxisView = new ChartyParts.SomeComponentConfigView({model: yaxis });
         var dataView = new ChartyParts.SomeComponentConfigView({model: databox });
@@ -29,10 +31,14 @@ define(
             .append(dataView.render().el);
 
 
-        var data_el = "#the-data";
-        $(data_el).html(ChartyPackager.wrapComponentsInJson(
-            [chart, xaxis, yaxis, databox]
-        ));
+        var atts_el = "#the-atts";
+        var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, databox]);
+
+        $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, databox]) )
+
+        var json_el = "#the-json";
+
+        $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
     });
 
     return this;

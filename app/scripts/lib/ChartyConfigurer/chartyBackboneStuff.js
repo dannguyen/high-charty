@@ -9,7 +9,6 @@ define(
     initialize: function(attrs, ctype, cname, formAtts){
       this.componentType = ctype;
       this.componentName = cname;
-      console.log("initializing componentType: " + this.componentType)
       this.formMetaAttributes = formAtts;
 
     },
@@ -47,21 +46,38 @@ define(
 
   ChartyParts.SomeComponentConfigView = Backbone.View.extend({
     className: "chart-component",
+    events: {
+      "change .chart-attr":  "attrChanged"
+    },
     template: _.template($("#charty-component").html()),
 
     initialize: function(){
-      this.listenTo(this.model, "change", this.render);
+      _.bindAll(this, 'attrChanged');
+      // this.listenTo(this.model, "change", this.render);
     },
 
+    attrChanged: function(e){
+      var ctarget = e.currentTarget;
+      window.ccct = this;
+      var ctarget_attname = ctarget.name.split('_')[1];
+      // do typecasting here instead of in the model
+      var meta_att = this.model.formAttributes()[ctarget_attname];
+      if(meta_att['type'] === 'integer'){
+        var nval = Number(ctarget.value)
+      }else{
+        var nval = ctarget.value
+      }
+
+      this.model.set(ctarget_attname, nval);
+
+      this.$el.trigger("chartAttrChanged");
+    },
     render: function(){
       var opts = {
         formAttributes: this.model.formAttributes(),
         componentName: this.model.componentName
       }
 
-      console.log("Component " + this.model.componentType + ": " +
-                    this.model.componentName + " rendering...")
-      console.log(opts)
 
       this.$el.html(this.template(opts));
       return this;

@@ -54,7 +54,7 @@
         "name": "title"
       },
       {
-        "name": "tickInterval",
+        "name": "tickPixelInterval",
         "type": "integer"
       },
       {

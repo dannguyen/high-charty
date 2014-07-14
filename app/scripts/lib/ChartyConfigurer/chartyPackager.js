@@ -10,12 +10,11 @@ define(
     var ChartyPackager = (function(){
       var o = {
 
-        convert: function(atts){
+        exportChartOptions: function(atts){
           var config = this.config;
           var convertedAtts = _.inject(atts, function(memo, attVal, attName){
             var mash = {};
             var attFoo = config[attName];
-            console.log(attName)
             if(_.isUndefined(attFoo)){
               // return a conventional hash
               var z = attName.split('_');
@@ -23,8 +22,6 @@ define(
               _h[z[1]] = attVal;
               mash[z[0]] = _h; // e.g. {chart: {something: someVal }}
             }else{
-              console.log('attfoo')
-              console.log(attFoo);
               mash = attFoo(attVal);
             }
 
@@ -36,7 +33,7 @@ define(
 
 
         wrapComponentsInJson: function(canonAttributes){
-          var obj = this.convert(canonAttributes)
+          var obj = this.exportChartOptions(canonAttributes)
 
           return JSON.stringify(obj, null, 4);
         }
@@ -117,10 +114,16 @@ define(
 
       o.config = (function(packager){
         var _c = {
-
-
           xAxis_categorical: function(value){
             return { xAxis: { categories: true } };
+          },
+
+          xAxis_title: function(value){
+            return({ xAxis: { title: {enabled: true, text: value }}});
+          },
+
+          yAxis_title: function(value){
+            return({ yAxis: { title: {enabled: true, text: value }}});
           },
 
           chart_stacking: function(value){
@@ -140,9 +143,6 @@ define(
           },
 
           data_text: function(value){
-            console.log('what is this')
-            console.log(this)
-
             var v =  packager.dataPackage(value);
             return  { series: v } ;
           }
@@ -153,7 +153,7 @@ define(
 
 
       return ({
-        convert: o.convert,
+        exportChartOptions: o.exportChartOptions,
         config: o.config,
         dataFoo: o.dataFoo,
         dataPackage: o.dataPackage,

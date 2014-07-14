@@ -1,7 +1,6 @@
 define(
-  ['underscore', 'backbone', 'jquery', 'chartyConfigurer', 'chartyPackager', 'chartyParts'],
-  function(_, Backbone, $, ChartyConfigurer, ChartyPackager, ChartyParts){
-
+  ['underscore', 'backbone', 'jquery', 'highcharts', 'chartyConfigurer', 'chartyPackager', 'chartyParts'],
+  function(_, Backbone, $, highcharts, ChartyConfigurer, ChartyPackager, ChartyParts){
 
     // need a place to put the templates
     window.template_configAttr = _.template($("#charty-config-attribute").html());
@@ -13,7 +12,7 @@ define(
         var the_el = "#the-form";
         $(the_el).html('');
         ChartyConfigurer.setConfig(chartyconfig);
-        window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 200});
+        window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 600});
         window.chartView = new ChartyParts.SomeComponentConfigView({model: chart });
 
 
@@ -45,21 +44,21 @@ define(
 
 
         var renderOnChange = function(){
+          console.log("renderonchange")
           var atts_el = "#the-atts";
           var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, databox]);
-
+          console.log(canonatts)
           $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, databox]) )
 
           var json_el = "#the-json";
 
           $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
 
+          $("#the-chart").highcharts(ChartyPackager.exportChartOptions(canonatts));
         };
 
-        $(".chart-attr").change(function(){
-          console.log("something changed")
-          renderOnChange();
-        });
+
+        $(".chart-component").on("chartAttrChanged", renderOnChange);
 
         renderOnChange()
     });

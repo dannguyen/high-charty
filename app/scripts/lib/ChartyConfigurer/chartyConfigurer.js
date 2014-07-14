@@ -50,7 +50,6 @@ define(
        initialAtts = initialAtts || {};
 
        var atts = this.createComponentAttHash(componentType, customName, initialAtts);
-       console.log("creating componentType: " + componentType)
        return new ChartyParts.SomeComponent(
         _.omit(atts, 'formMetaAttributes', 'componentName'),
                componentType,

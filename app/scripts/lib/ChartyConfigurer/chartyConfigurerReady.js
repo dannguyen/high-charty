@@ -16,7 +16,18 @@ define(
         window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 200});
         window.chartView = new ChartyParts.SomeComponentConfigView({model: chart });
 
+
+        var data = ["seriesKey,categoryKey,yKey,nothing",
+        "fruit,season,quantity,price",
+        "Apples,Fall,48,1.00",
+        "Apples,Winter,82,1.50",
+        "Oranges,Fall,34,2.25",
+        "Oranges,Winter,98,3.58",
+        "Pears,Fall,45,1.75",
+        "Pears,Winter,149,2.10"].join("\n")
+
         var databox = ChartyConfigurer.initComponent('data', 'data', {
+            text: data,
             seriesColors: "#6699cc,#003366,#EAD333,#3CDABA,#B65A4A"
         });
 
@@ -25,21 +36,36 @@ define(
         var xaxisView = new ChartyParts.SomeComponentConfigView({model: xaxis });
         var yaxisView = new ChartyParts.SomeComponentConfigView({model: yaxis });
         var dataView = new ChartyParts.SomeComponentConfigView({model: databox });
-        $(the_el).append(chartView.render().el)
-            .append(xaxisView.render().el)
-            .append(yaxisView.render().el)
-            .append(dataView.render().el);
 
 
-        var atts_el = "#the-atts";
-        var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, databox]);
+          $(the_el).append(chartView.render().el)
+              .append(xaxisView.render().el)
+              .append(yaxisView.render().el)
+              .append(dataView.render().el);
 
-        $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, databox]) )
 
-        var json_el = "#the-json";
+        var renderOnChange = function(){
+          var atts_el = "#the-atts";
+          var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, databox]);
 
-        $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
+          $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, databox]) )
+
+          var json_el = "#the-json";
+
+          $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
+
+        };
+
+        $(".chart-attr").change(function(){
+          console.log("something changed")
+          renderOnChange();
+        });
+
+        renderOnChange()
     });
+
+
+
 
     return this;
 

@@ -75,9 +75,7 @@
     (<label for="<%=fullname %>"><%=fullname%></label>)
 
         <% switch( optType ){ case 'text': %>
-                <textarea class="chart-attr" name="<%=fullname %>" cols="60" rows="20">
-                <%= value %>
-                </textarea>
+        <textarea class="chart-attr" name="<%=fullname %>" cols="60" rows="20"><%= value %></textarea>
             <% break; case 'checkbox': %>
                 <input class="chart-attr" type="checkbox" name="<%=fullname %>" value="<%= value %>">
             <% break; case 'select': %>

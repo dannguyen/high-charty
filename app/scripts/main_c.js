@@ -26,6 +26,7 @@ requirejs.config({
     backbone: '../bower_components/backbone/backbone',
     highcharts: 'vendor/highcharts',
     jquery: 'vendor/jquery',
+    jquery_parse: "vendor/jquery.parse",
     underscore: '../bower_components/underscore/underscore',
     chartyParts: 'lib/ChartyConfigurer/chartyBackboneStuff',
     chartyConfigurer: 'lib/ChartyConfigurer/chartyConfigurer',

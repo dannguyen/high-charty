@@ -44,18 +44,6 @@
         "defaultValue": ","
       },
       {
-        "name": "xKey"
-      },
-      {
-        "name": "yKey"
-      },
-      {
-        "name": "seriesKey"
-      },
-      {
-        "name": "categoryKey"
-      },
-      {
         "name": "seriesColors"
       }
     ]

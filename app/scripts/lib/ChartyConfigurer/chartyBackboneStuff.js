@@ -44,12 +44,12 @@ define(
   })
 
 
-  ChartyParts.SomeComponentConfigView = Backbone.View.extend({
+  ChartyParts.ComponentFormSection = Backbone.View.extend({
     className: "chart-component",
     events: {
       "change .chart-attr":  "attrChanged"
     },
-    template: _.template($("#charty-component").html()),
+    // template: _.template($("#charty-component").html()),
 
     initialize: function(){
       _.bindAll(this, 'attrChanged');

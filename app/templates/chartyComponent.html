@@ -1,0 +1,32 @@
+<h3><%= componentName %></h3>
+<% _.each(formAttributes, function(att, key){  %>
+    <div class="form-group">
+      <% switch( att.optType ){ case 'text': %>
+      <label for="<%=att.fullname %>"><%=name%></label>
+      <textarea class="chart-attr form-control" name="<%=att.fullname %>" cols="60" rows="10"><%= att.value %></textarea>
+          <% break; case 'checkbox': %>
+              <div class="checkbox">
+              <label class="checkbox-inline" for="<%=att.fullname %>">
+                  <input class=" chart-attr" type="checkbox" name="<%=att.fullname %>" value="<%= att.value %>">
+                  <%=att.name%>
+              </label>
+              </div>
+          <% break; case 'select': %>
+              <label for="<%=att.fullname %>"><%=att.name%></label>
+              <select class="chart-attr form-control" name="<%=att.fullname %>">
+              <% _.each(att.values, function(val){  %>
+                  <% var selected = val === att.value ? 'selected' : '' %>
+                  <option <%=selected%>><%=val%></option>
+              <% });  %>
+              </select>
+          <% break; case 'input': %>
+              <label for="<%=att.fullname %>"><%=att.name%></label>
+              <input class="chart-attr form-control" name="<%=att.fullname %>" value="<%= att.value %>">
+              <% break; %>
+      <% } %>
+
+
+
+
+    </div>
+<% }) %>

@@ -36,14 +36,15 @@ requirejs.config({
     underscore: '../bower_components/underscore/underscore',
     chartyParts: 'lib/ChartyConfigurer/chartyBackboneStuff',
     chartyConfigurer: 'lib/ChartyConfigurer/chartyConfigurer',
-    chartyPackager: 'lib/ChartyConfigurer/chartyPackager'
-
+    chartyPackager: 'lib/ChartyConfigurer/chartyPackager',
+    page_router_query: "vendor/page.router.query"
   }
 });
 
-requirejs( ['lib/ChartyConfigurer/chartyConfigurerReady'], function(capp){
-  window.app = capp;
+requirejs( ['appController'], function(app){
+  window.app = app;
   console.log('logging app controller');
+  app.routeHandler();
 
 });
 

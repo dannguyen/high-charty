@@ -14,7 +14,7 @@ define(
         $(the_el).html('');
         ChartyConfigurer.setConfig(chartyconfig);
         window.chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 600});
-        window.chartView = new ChartyParts.SomeComponentConfigView({model: chart });
+        window.chartView = new ChartyParts.ComponentFormSection({model: chart });
 
 
         var data = ["seriesKey,categoryKey,yKey,nothing",
@@ -33,15 +33,16 @@ define(
 
         var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis' );
         var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis');
-        var xaxisView = new ChartyParts.SomeComponentConfigView({model: xaxis });
-        var yaxisView = new ChartyParts.SomeComponentConfigView({model: yaxis });
-        var dataView = new ChartyParts.SomeComponentConfigView({model: databox });
+        var xaxisView = new ChartyParts.ComponentFormSection({model: xaxis });
+        var yaxisView = new ChartyParts.ComponentFormSection({model: yaxis });
+        var dataView = new ChartyParts.ComponentFormSection({model: databox });
 
 
           $(the_el).append(chartView.render().el)
               .append(xaxisView.render().el)
               .append(yaxisView.render().el)
-              .append(dataView.render().el);
+              .append(dataView.render().el)
+              .find(".chart-component").wrap("<div class='col-sm-6'></div>");
 
 
         var renderOnChange = function(){

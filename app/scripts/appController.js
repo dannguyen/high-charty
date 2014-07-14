@@ -1,125 +1,227 @@
-// define(['jquery', 'underscore', 'backbone', 'chartyChart'], function($, _, Backbone, Chart){
+define(['underscore', 'backbone', 'jquery', 'highcharts', 'templater',
+        'page_router_query', 'chartyConfigurer', 'chartyPackager', 'chartyParts'],
+  function(_, Backbone, $, highcharts, templater, qs, ChartyConfigurer, ChartyPackager, ChartyParts){
 
-//   return({
-//     hello: 'world!',
-//     uscore: _,
-//     jq: $,
-//     bbq: Backbone
-//     // chart: Chart
-//   });
-// });
+    var h = {};
 
-define(['jquery', 'underscore', 'backbone', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'really_simple_colorpicker', 'svgDownload'],
-  function($, _, Backbone, Chart, qs){
+    h.contentEl = '#the-content';
+    h.clearPage = function(){
+      $(this.contentEl).html("");
+    };
 
-    var contentEl = '#the-content',
-        clearPage = function(){
-          $(contentEl).html("");
-        },
-        chart = null,
+    h.routeHandler = function(){
+      var hashPath = window.location.hash;
+      if(hashPath.match(/^#charts/)){
+        this.routeToChartURL(hashPath);
+      }else{
+        this.routeToChartForm();
+      }
+    };
 
-        routeFoo = function(){
-          var hashPath = window.location.hash;
-          if(hashPath.match(/^#charts/)){
-            console.log('start chartUrl/');
-            clearPage();
-            renderTemplateUntoPage('chartUrl');
-            var qm = hashPath.match(/charts\?(.+)/)
-            if(qm){
-              var querystring = qm[1];
-              console.log('query: ' + querystring)
-              var queryOpts =  qs.parse(querystring);
-              chart = new Chart(queryOpts);
-              chart.draw("#chart-container");
-            }else{
-              $('#chart-container').html("<p>You must enter a query string</p>")
-            }
+    h.routeToChartForm = function(){
+      this.clearPage();
+      console.log('start chartForm/');
+      this.renderTemplateUntoPage("chartForm");
 
-          }else{
-            console.log('chart Form')
-            clearPage();
-            renderTemplateUntoPage('chartForm')
-            chartForm();
-          }
-        },
+      $.getJSON('scripts/lib/ChartyConfigurer/chart-config.json', function(chartyconfig){
 
-        require_template = function(templateName) {
-          var template = $('#template_' + templateName);
-          if (template.length === 0) {
-            var tmpl_dir = '/templates';
-            var tmpl_url = tmpl_dir + '/' + templateName + '.html';
-            var tmpl_string = '';
+        var chartyComponent = templater.compileTemplate('chartyComponent');
 
-            $.ajax({
-                url: tmpl_url,
-                method: 'GET',
-                async: false,
-                contentType: 'text',
-                success: function (data) {
-                    tmpl_string = data;
-                }
-            });
+        ChartyConfigurer.setConfig(chartyconfig);
+        var chart = ChartyConfigurer.initComponent('chart', 'chart', {height: 600});
+        var chartView = new ChartyParts.ComponentFormSection({model: chart});
+        var data = ["seriesKey,categoryKey,yKey,nothing",
+                    "fruit,season,quantity,price",
+                    "Apples,Fall,48,1.00",
+                    "Apples,Winter,82,1.50",
+                    "Oranges,Fall,34,2.25",
+                    "Oranges,Winter,98,3.58",
+                    "Pears,Fall,45,1.75",
+                    "Pears,Winter,149,2.10"].join("\n")
 
-            $('head').append('<script id="template_' +
-            templateName + '" type="text/template">' + tmpl_string + '<\/script>');
-          }
-        },
+        var data = ChartyConfigurer.initComponent('data', 'data', {
+            text: data,
+            seriesColors: "#6699cc,#003366,#EAD333,#3CDABA,#B65A4A"
+        });
 
-        renderTemplateUntoPage = function(templateName){
-          require_template(templateName);
-          var tfoo = _.template($('#template_' + templateName).html());
+        var xaxis = ChartyConfigurer.initComponent('axis', 'xAxis' );
+        var yaxis = ChartyConfigurer.initComponent('axis', 'yAxis');
+        var xaxisView = new ChartyParts.ComponentFormSection({model: xaxis });
+        var yaxisView = new ChartyParts.ComponentFormSection({model: yaxis });
+        var dataView = new ChartyParts.ComponentFormSection({model: data });
 
-          $(contentEl).html(tfoo());
-        },
+        chartView.template = chartyComponent, xaxisView.template = chartyComponent,
+        yaxisView.template = chartyComponent, dataView.template = chartyComponent;
 
+        $("#the-form").append(chartView.render().el)
+            .append(xaxisView.render().el)
+            .append(yaxisView.render().el)
+            .append(dataView.render().el)
+            .find(".chart-component").wrap("<div class='col-sm-6'></div>");
+
+        var renderOnChange = function(){
+          var atts_el = "#the-atts";
+          var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, data]);
+          $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, data]) )
+
+          var json_el = "#the-json";
+
+          $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
+
+          $("#the-chart").highcharts(ChartyPackager.exportChartOptions(canonatts));
+        };
 
 
-        chartForm = function(){
-          chart =  new Chart();
-          var lazyUpdate = _.debounce(function(){
-            console.log('lazyupdate happening')
-            $("#chart-config").find(".form-control").each(function(){
-                    if( $(this).prop("tagName") === 'SELECT' ){
-                        var val = $(this).find(":selected").attr('value');
-                    }else{
-                        var val = $(this).val();
-                    }
-                    var att = $(this).attr('name');
+        $(".chart-component").on("chartAttrChanged", renderOnChange);
 
-                    chart.set(att, val);
-             });
+        renderOnChange();
 
 
+      });
 
-             $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
-             $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
+//      var chartycomponent = templater.compileTemplate("chartyComponent");
 
-             chart.draw("#chart-container");
-             $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
+    };
 
-          }, 800);
+    h.renderTemplateUntoPage = function(tname){
+      var tfoo = templater.compileTemplate(tname);
+      $(this.contentEl).html(tfoo());
+    }
 
-
-        $('#chart-config .form-control').change(
-            function(){ lazyUpdate(); }
-        );
-
-        lazyUpdate();
-      };
+    h.routeToChartURL = function(hashPath){
+      this.clearPage();
+      console.log('start chartUrl/');
+      var qm = hashPath.match(/charts\?(.+)/)
+      if(qm){
+        var querystring = qm[1];
+        console.log('query: ' + querystring)
+        var queryOpts =  qs.parse(querystring);
+        // chart = new Chart(queryOpts);
+        // chart.draw("#chart-container");
+      }else{
+        $('#chart-container').html("<p>You must enter a query string</p>")
+      }
+    };
 
 
 
 
-      return(
-        {
-          routeFoo: routeFoo,
-          chart: chart
-        }
-      );
-
-
+    return h;
   }
 );
+
+
+// define(['jquery', 'underscore', 'backbone', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'really_simple_colorpicker', 'svgDownload'],
+//   function($, _, Backbone, Chart, qs){
+
+//     var contentEl = '#the-content',
+//         clearPage = function(){
+//           $(contentEl).html("");
+//         },
+//         chart = null,
+
+//         routeFoo = function(){
+//           var hashPath = window.location.hash;
+//           if(hashPath.match(/^#charts/)){
+//             console.log('start chartUrl/');
+//             clearPage();
+//             renderTemplateUntoPage('chartUrl');
+//             var qm = hashPath.match(/charts\?(.+)/)
+//             if(qm){
+//               var querystring = qm[1];
+//               console.log('query: ' + querystring)
+//               var queryOpts =  qs.parse(querystring);
+//               chart = new Chart(queryOpts);
+//               chart.draw("#chart-container");
+//             }else{
+//               $('#chart-container').html("<p>You must enter a query string</p>")
+//             }
+
+//           }else{
+//             console.log('chart Form')
+//             clearPage();
+//             renderTemplateUntoPage('chartForm')
+//             chartForm();
+//           }
+//         },
+
+//         require_template = function(templateName) {
+//           var template = $('#template_' + templateName);
+//           if (template.length === 0) {
+//             var tmpl_dir = '/templates';
+//             var tmpl_url = tmpl_dir + '/' + templateName + '.html';
+//             var tmpl_string = '';
+
+//             $.ajax({
+//                 url: tmpl_url,
+//                 method: 'GET',
+//                 async: false,
+//                 contentType: 'text',
+//                 success: function (data) {
+//                     tmpl_string = data;
+//                 }
+//             });
+
+//             $('head').append('<script id="template_' +
+//             templateName + '" type="text/template">' + tmpl_string + '<\/script>');
+//           }
+//         },
+
+//         renderTemplateUntoPage = function(templateName){
+//           require_template(templateName);
+//           var tfoo = _.template($('#template_' + templateName).html());
+
+//           $(contentEl).html(tfoo());
+//         },
+
+
+
+//         chartForm = function(){
+//           chart =  new Chart();
+//           var lazyUpdate = _.debounce(function(){
+//             console.log('lazyupdate happening')
+//             $("#chart-config").find(".form-control").each(function(){
+//                     if( $(this).prop("tagName") === 'SELECT' ){
+//                         var val = $(this).find(":selected").attr('value');
+//                     }else{
+//                         var val = $(this).val();
+//                     }
+//                     var att = $(this).attr('name');
+
+//                     chart.set(att, val);
+//              });
+
+
+
+//              $("#raw-chart-json").text(JSON.stringify(chart.rawAttributes(), null, 4));
+//              $("#formatted-chart-json").text(JSON.stringify(chart.serializeFormattedAttributes(), null, 4));
+
+//              chart.draw("#chart-container");
+//              $("#chart-container").append("<a href=\"/#charts?" + $.param(chart.rawAttributes()) + "\">Chart URL</a>");
+
+//           }, 800);
+
+
+//         $('#chart-config .form-control').change(
+//             function(){ lazyUpdate(); }
+//         );
+
+//         lazyUpdate();
+//       };
+
+
+
+
+//       return(
+//         {
+//           routeFoo: routeFoo,
+//           chart: chart
+//         }
+//       );
+
+
+//   }
+// );
 
 
 

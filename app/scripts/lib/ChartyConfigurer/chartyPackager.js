@@ -120,8 +120,20 @@ define(
             return({ xAxis: { title: {enabled: true, text: value }}});
           },
 
+          xAxis_tickPixelInterval: function(value){
+            var val = Number(value);
+            if(_.isNaN(val) || val === 0){val = null; }
+            return({ xAxis: { tickPixelInterval: val}});
+          },
+
           yAxis_title: function(value){
             return({ yAxis: { title: {enabled: true, text: value }}});
+          },
+
+          yAxis_tickPixelInterval: function(value){
+            var val = Number(value);
+            if(_.isNaN(val) || val === 0){val = null; }
+            return({ yAxis: { tickPixelInterval: val}});
           },
 
           chart_stacking: function(value){
@@ -130,7 +142,7 @@ define(
           },
 
           chart_width: function(value){
-            var v = (value === '100%') ? null : value;
+            var v = (value === '100%') ? null : Number(value);
             var obj = { width: v };
             return obj;
           },
@@ -142,7 +154,7 @@ define(
 
           data_text: function(value){
             var v =  packager.dataPackage(value);
-            return  { series: v } ;
+            return  { series: v, xAxis: {categories: true} } ;
           }
         };
 

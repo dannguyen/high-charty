@@ -7,6 +7,10 @@ define(
       this.components = obj;
     },
 
+    exportAttsToURL: function(atts){
+      return $.param(atts);
+    },
+
     createComponentAttHash: function(componentName, customComponentName, initalAttValues){
        // by default, customName is the same as componentName, e.g. 'chart'
        // but can be set to something like, 'xAxis'
@@ -60,7 +64,15 @@ define(
 
     exportComponents: function(componentsArr){
       var obj = _.inject(componentsArr, function(memo, component){
-        return _.extend(memo, component.canonicalAttributes());
+        // remove all empty values
+        var nonEmpties = _.inject(component.canonicalAttributes(), function(h, val, att){
+          if(!_.isEmpty(val)){
+            h[att] = val;
+          }
+          return h;
+        }, {});
+
+        return _.extend(memo, nonEmpties);
       }, {});
 
       return obj;

@@ -61,14 +61,15 @@ define(
       window.ccct = this;
       var ctarget_attname = ctarget.name.split('_')[1];
       // do typecasting here instead of in the model
-      var meta_att = this.model.formAttributes()[ctarget_attname];
-      if(meta_att['type'] === 'integer'){
-        var nval = Number(ctarget.value)
-      }else{
-        var nval = ctarget.value
-      }
+      // TK: NEVERMIND, do typecasting in the model
+      // var meta_att = this.model.formAttributes()[ctarget_attname];
+      // if(meta_att['type'] === 'integer'){
+      //   var nval = Number(ctarget.value)
+      // }else{
+      //   var nval = ctarget.value
+      // }
 
-      this.model.set(ctarget_attname, nval);
+      this.model.set(ctarget_attname, ctarget.value);
 
       this.$el.trigger("chartAttrChanged");
     },

@@ -59,10 +59,6 @@
       {
         "name": "tickPixelInterval",
         "type": "number"
-      },
-      {
-        "name": "categorical",
-        "type": "boolean"
       }
     ]
   }

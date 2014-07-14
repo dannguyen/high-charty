@@ -60,15 +60,18 @@ define(['underscore', 'backbone', 'jquery', 'highcharts', 'templater',
             .find(".chart-component").wrap("<div class='col-sm-6'></div>");
 
         var renderOnChange = function(){
-          var atts_el = "#the-atts";
+          $("#the-atts").html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, data]) )
+
           var canonatts = ChartyConfigurer.exportComponents([chart, xaxis, yaxis, data]);
-          $(atts_el).html(ChartyConfigurer.wrapComponentsInJson([chart, xaxis, yaxis, data]) )
 
-          var json_el = "#the-json";
+          var chart_params = ChartyConfigurer.exportAttsToURL(canonatts);
+          $("#the-url-params").text(chart_params);
+          $("#the-url-w-params").html("<a href=\"#charts?" + chart_params + " \">Chart URL</a>")
 
-          $(json_el).html(ChartyPackager.wrapComponentsInJson(canonatts));
-
+          $("#the-json").html(ChartyPackager.wrapComponentsInJson(canonatts));
           $("#the-chart").highcharts(ChartyPackager.exportChartOptions(canonatts));
+
+
         };
 
 
@@ -90,16 +93,23 @@ define(['underscore', 'backbone', 'jquery', 'highcharts', 'templater',
 
     h.routeToChartURL = function(hashPath){
       this.clearPage();
+      this.renderTemplateUntoPage("chartUrl");
+
       console.log('start chartUrl/');
       var qm = hashPath.match(/charts\?(.+)/)
       if(qm){
         var querystring = qm[1];
         console.log('query: ' + querystring)
         var queryOpts =  qs.parse(querystring);
-        // chart = new Chart(queryOpts);
-        // chart.draw("#chart-container");
+        console.log(queryOpts);
+
+        var chartOpts = ChartyPackager.exportChartOptions(queryOpts);
+        console.log(chartOpts)
+
+        $("#the-chart").highcharts(chartOpts);
+
       }else{
-        $('#chart-container').html("<p>You must enter a query string</p>")
+        $('#the-chart').html("<p>You must enter a query string</p>")
       }
     };
 

@@ -6,10 +6,8 @@
 define(
   ['underscore', 'backbone', 'jquery', 'jquery_parse'],
   function(_, Backbone, $){
-
     var ChartyPackager = (function(){
       var o = {
-
         exportChartOptions: function(atts){
           var config = this.config;
           var convertedAtts = _.inject(atts, function(memo, attVal, attName){

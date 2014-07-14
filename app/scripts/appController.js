@@ -9,8 +9,8 @@
 //   });
 // });
 
-define(['jquery', 'underscore', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'really_simple_colorpicker', 'svgDownload'],
-  function($, _, Chart, qs){
+define(['jquery', 'underscore', 'backbone', 'chartyChart', 'page_router_query', 'rgbcolor', 'canvg', 'really_simple_colorpicker', 'svgDownload'],
+  function($, _, Backbone, Chart, qs){
 
     var contentEl = '#the-content',
         clearPage = function(){

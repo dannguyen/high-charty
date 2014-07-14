@@ -9,6 +9,12 @@ requirejs.config({
             //module value.
             exports: 'Backbone'
         },
+
+        'highcharts': {
+            deps: ['jquery'],
+            exports: 'highcharts'
+        },
+
         'underscore': {
             exports: '_'
         },

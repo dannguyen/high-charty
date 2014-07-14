@@ -3,12 +3,11 @@
     "attributes": [
       {
         "name": "width",
-        "type": "integer",
         "defaultValue": "100%"
       },
       {
         "name": "height",
-        "type": "integer",
+        "type": "number",
         "defaultValue": 400
       },
       {
@@ -54,8 +53,12 @@
         "name": "title"
       },
       {
+        "name": "min",
+        "type": "number"
+      },
+      {
         "name": "tickPixelInterval",
-        "type": "integer"
+        "type": "number"
       },
       {
         "name": "categorical",

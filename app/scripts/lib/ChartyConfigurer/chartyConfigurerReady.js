@@ -3,6 +3,7 @@ define(
   function(_, Backbone, $, highcharts, ChartyConfigurer, ChartyPackager, ChartyParts){
 
     // need a place to put the templates
+    // TK move this some where else int he view
     window.template_configAttr = _.template($("#charty-config-attribute").html());
 
     // read the configuration
